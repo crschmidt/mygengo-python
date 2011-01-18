@@ -5,6 +5,23 @@ API in Python, and that bothered me. myGengo has an excellent API for real human
 that should be getting way more love. To that end, pyGengo is released (under the LGPL), totally
 free for anyone to use.
 
+Installation & Requirements
+------------------------------------------------------------------------------------------
+Installing pyGengo is fairly simple:
+
+    pip install pygengo
+
+Alternatively, if you're in the stone ages:
+
+    easy_install pygengo
+
+pyGengo also relies on httplib2, which can be installed through either of the above methods. If
+you're running on a version of Python prior to 2.6, you'll need to install simplejson as well.
+
+A version of pyGengo for Python 3 is in the works, but as Python 3 isn't even quite deemed production
+ready/reliable yet, it's not the highest priority at the moment.
+
+
 Basic Usage
 ------------------------------------------------------------------------------------------
 Full in-depth documentation is coming on the Github project page wiki soon, but in the meantime
