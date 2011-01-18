@@ -135,6 +135,13 @@ class PyGengo(object):
 				base_url + fn['url']
 			)
 			
+			# Do a check here for one specific type of job set - we need to support posting multiple jobs
+			# at once, so see if there's an dictionary of jobs passed in, pop it out, let things go on as normal,
+			# then pick this chain back up below...
+			multiple_jobs = None
+			if fn['method'] == 'POST' or fn['method'] == 'PUT':
+				multiple_jobs = kwargs.pop('jobs', None)
+
 			# Build up a proper 'authenticated' url...
 			#
 			# Note: for further information on what's going on here, it's best to familiarize yourself
@@ -142,7 +149,14 @@ class PyGengo(object):
 			query_params = dict([k, v.encode('utf-8')] for k, v in kwargs.items())
 			query_params['api_key'] = self.public_key
 			query_params['ts'] = int(time())
-			query_string = urlencode(sorted(query_params.items(), key = itemgetter(0)))
+			
+			# Multiple jobs at once requires passing in a fully JSON'd string, otherwise send the generics
+			if fn['method'] == 'POST' or fn['method'] == 'PUT':
+				query_params['jobs'] = json.dumps(multiple_jobs, separators=(',', ':'))
+				query_string = json.dumps(query_params, separators=(',', ':'), sort_keys=True)
+			else:
+				query_string = urlencode(sorted(query_params.items(), key = itemgetter(0)))
+			
 			query_hmac = hmac.new(self.private_key, query_string, sha1)
 			query_params['api_sig'] = query_hmac.hexdigest()
 			query_string = urlencode(query_params)
