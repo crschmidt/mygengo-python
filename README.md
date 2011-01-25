@@ -65,7 +65,7 @@ Creates an instance of pyGengo for you to communicate with the myGengo API.
 - _private_key_: Required. Your private key, generated on the myGengo API site.
 - _sandbox_: Optional. Defaults to False, dictates whethe to send the call to the myGengo Sandbox API.
 - _api_version_: Optional. API version to use with myGengo (defaults to 1).
-- _headers_: Optional. Additional HTTP headers to send along, passed as a dictionary object.
+- _headers_: Optional. Additional HTTP headers to send along, passed as a dictionary object.  
 
     from pygengo import PyGengo
     
