@@ -120,7 +120,7 @@ Sends a new job over to myGengo for translation. Jobs are dictionaries that get 
 below.
 
 ### Parameters:
-- _job_: A dictionary containing a full job description for myGengo.
+- _job_: Required. A dictionary containing a full job description for myGengo.
 
 ### Example:
     from pygengo import PyGengo
@@ -142,3 +142,42 @@ below.
     }
     
 	myGengo.postTranslationJob(job)
+
+
+PyGengo.getServiceLanguages()
+----------------------------------------------------------------------------------------------------------
+Returns a list of supported languages and their language codes.
+
+### Paramters:
+None
+
+### Example:
+    from pygengo import PyGengo
+    
+    myGengo = PyGengo(
+        public_key = 'your_public_key',
+        private_key = 'your_private_key',
+        sandbox = True, # possibly False, depending on your dev needs
+    )
+    
+	myGengo.getServiceLanguages()
+
+
+PyGengo.getServiceLanguagePairs()
+--------------------------------------------------------------------------------------------------------
+Returns supported translation language pairs, tiers, and credit prices.
+
+### Parameters:
+- _lc_src_: Optional. A source language code to filter the results to relevant pairs.
+
+### Example:
+    from pygengo import PyGengo
+    
+    myGengo = PyGengo(
+        public_key = 'your_public_key',
+        private_key = 'your_private_key',
+        sandbox = True, # possibly False, depending on your dev needs
+    )
+    
+    # Send along an optional source language declaration.
+	myGengo.getServiceLanguagePairs(lc_src = 'en')
