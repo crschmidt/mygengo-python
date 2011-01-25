@@ -230,6 +230,66 @@ of these actions require other parameters, see their respective sections immedia
     )
 
 
+PyGengo.getTranslationJob()
+----------------------------------------------------------------------------------------------------------
+Retrieves a specific job from myGengo.
+
+### Parameters:
+- _id_: Required. The ID of the job you want to retrieve.
+- _pre_mt_: Optional. 1 (true) / 0 (false, default). Whether to return a machine translation if the human translation is not complete yet.
+
+### Example:
+    from pygengo import PyGengo
+    
+    myGengo = PyGengo(
+        public_key = 'your_public_key',
+        private_key = 'your_private_key',
+        sandbox = True, # possibly False, depending on your dev needs
+    )
+    
+	myGengo.getTranslationJob(id = 42, pre_mt = 1)
+
+
+PyGengo.getTranslationJobs()
+----------------------------------------------------------------------------------------------------------
+Retrieves a list of resources for the most recent jobs filtered by the given parameters.
+
+### Parameters:
+- _status_: Optional. "unpaid", "available", "pending", "reviewable", "approved", "rejected", or "canceled".
+- _timestamp_after_: Optional. Epoch timestamp from which to filter submitted jobs.
+- _count_: Optional. Defaults to 10.
+
+### Example:
+    from pygengo import PyGengo
+    
+    myGengo = PyGengo(
+        public_key = 'your_public_key',
+        private_key = 'your_private_key',
+        sandbox = True, # possibly False, depending on your dev needs
+    )
+    
+	myGengo.getTranslationJobs(status = "unpaid", count = 15)
+
+
+PyGengo.getTranslationJobBatch()
+----------------------------------------------------------------------------------------------------------
+Retrieves the group of jobs that were previously submitted together.
+
+### Parameters:
+- _id_: Required. The ID of a job that you're looking for the entire batch of.
+
+### Example:
+    from pygengo import PyGengo
+    
+    myGengo = PyGengo(
+        public_key = 'your_public_key',
+        private_key = 'your_private_key',
+        sandbox = True, # possibly False, depending on your dev needs
+    )
+    
+	myGengo.getTranslationJobBatch(id = 42)
+
+
 PyGengo.deleteTranslationJob()
 ----------------------------------------------------------------------------------------------------------
 Cancels the job. You can only cancel a job if it has not been started already by a translator.
