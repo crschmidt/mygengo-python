@@ -51,7 +51,7 @@ class PyGengoError(Exception):
 
 		Note: You need to explicitly import them into your code, e.g:
 
-		from pygengo import PyGengoError, APILimitError, AuthError
+		from pygengo import PyGengoError, AuthError
 	"""
 	def __init__(self, msg, error_code=None):
 		self.msg = msg
@@ -124,6 +124,12 @@ class PyGengo(object):
 			# Grab the (hopefully) existing method 'definition' to fire off from our api hash table.
 			fn = apihash[api_call]
 			
+			# Do a check here for specific job sets - we need to support posting multiple jobs
+			# at once, so see if there's an dictionary of jobs passed in, pop it out, let things go on as normal,
+			# then pick this chain back up below...
+			job = kwargs.pop('job', None)
+			multiple_jobs = kwargs.pop('jobs', None)
+			
 			# Set up a true base URL, abstracting away the need to care about the sandbox mode
 			# or API versioning at this stage.
 			base_url = self.api_url.replace('{{version}}', 'v%d' % self.api_version)
@@ -135,50 +141,44 @@ class PyGengo(object):
 				base_url + fn['url']
 			)
 			
-			# Do a check here for specific job sets - we need to support posting multiple jobs
-			# at once, so see if there's an dictionary of jobs passed in, pop it out, let things go on as normal,
-			# then pick this chain back up below...
-			job = None
-			multiple_jobs = None
-			if fn['method'] == 'POST' or fn['method'] == 'PUT':
-				job = kwargs.pop('job', None)
-				multiple_jobs = kwargs.pop('jobs', None)
-
 			# Build up a proper 'authenticated' url...
 			#
 			# Note: for further information on what's going on here, it's best to familiarize yourself
 			# with the myGengo authentication API.
 			query_params = dict([k, v.encode('utf-8')] for k, v in kwargs.items())
 			query_params['api_key'] = self.public_key
-			query_params['ts'] = int(time())
+			query_params['ts'] = str(int(time()))
 			
 			# Encoding jobs becomes a bit different than any other method call, so we catch them and do a little
 			# JSON-dumping action. Catching them also allows us to provide some sense of portability between the various
 			# job-posting methods in that they can all safely rely on passing dictionaries around. Huzzah!
 			if fn['method'] == 'POST' or fn['method'] == 'PUT':
 				if api_call == 'postTranslationJob':
-					query_params['data'] = json.dumps(job, separators = (',', ':'))
+					query_params['data'] = json.dumps({'job': job}, separators = (',', ':'))
 				else:
 					query_params['jobs'] = json.dumps(multiple_jobs, separators = (',', ':'))
-				query_string = json.dumps(query_params, separators=(',', ':'), sort_keys=True)
+				
+				query_json = json.dumps(query_params, separators = (',', ':'), sort_keys = True)
+				query_hmac = hmac.new(self.private_key, query_json, sha1)
+				query_params['api_sig'] = query_hmac.hexdigest()
+				query_data = urlencode(query_params)
+				
+				# Httplib2 doesn't assume this for POST requests, but in the case of the myGengo API it's a bit of a hidden necessity.
+				headers = self.headers
+				headers['Content-Type'] = 'application/x-www-form-urlencoded'
+				resp, content = self.client.request(base, fn['method'], headers = headers, body = query_data)
 			else:
 				query_string = urlencode(sorted(query_params.items(), key = itemgetter(0)))
-			
-			query_hmac = hmac.new(self.private_key, query_string, sha1)
-			query_params['api_sig'] = query_hmac.hexdigest()
-			query_string = urlencode(query_params)
-			
-			# Then open and load that shiiit, yo. TODO: check HTTP method and junk, handle errors/authentication
-			if fn['method'] == 'POST' or fn['method'] == 'PUT':
-				resp, content = self.client.request(base, fn['method'], query_string, headers = self.headers)
-			else:
+				query_hmac = hmac.new(self.private_key, query_string, sha1)
+				query_params['api_sig'] = query_hmac.hexdigest()
+				query_string = urlencode(query_params)
 				resp, content = self.client.request(base + '?%s' % query_string, fn['method'], headers = self.headers)
 			
 			# Load this into native Python...
 			results = json.loads(content)
 			
 			# See if we got any weird or odd errors back that we can cleanly raise on or something...
-			if 'optstat' in results:
+			if 'opstat' in results and results['opstat'] != 'ok':
 				raise PyGengoError(errors[`results['err']['code']`], results['err']['code'])
 			
 			# If not, screw it, return the junks!
@@ -187,7 +187,7 @@ class PyGengo(object):
 		if api_call in apihash:
 			return get.__get__(self)
 		else:
-			raise AttributeError, api_call
+			raise AttributeError
 	
 	@staticmethod
 	def unicode2utf8(text):
