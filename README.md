@@ -1,12 +1,12 @@
 pyGengo - a Python Library for the myGengo API (http://myGengo.com/)
-------------------------------------------------------------------------------------------
+========================================================================================================
 I built pyGengo because I didn't see a clear cut method for interacting with the myGengo
 API in Python, and that bothered me. myGengo has an excellent API for real human-based translation
 that should be getting way more love. To that end, pyGengo is released (under the LGPL), totally
 free for anyone to use.
 
 Installation & Requirements
-------------------------------------------------------------------------------------------
+========================================================================================================
 Installing pyGengo is fairly simple:
 
     pip install pygengo
@@ -23,7 +23,7 @@ ready/reliable yet, it's not the highest priority at the moment.
 
 
 Basic Usage
-------------------------------------------------------------------------------------------
+=====================================================================================================
 Full in-depth documentation is coming on the Github project page wiki soon, but in the meantime
 anyone should be able to cobble together a working script with the following:
 
@@ -42,7 +42,7 @@ key of the dictionary entry is the function name, and the parameters are exactly
 over on the myGengo API site (http://mygengo.com/about/services/api).
 
 Question, Comments, Complaints, Praise?
--------------------------------------------------------------------------------------------
+======================================================================================================
 If you have questions or comments and would like to reach me directly, please feel free to do
 so at the following outlets.
 
@@ -54,13 +54,13 @@ If you come across any issues, please file them on the Github project issue trac
 
 
 pyGengo Function Documentation
--------------------------------------------------------------------------------------------
+=======================================================================================================
 
 PyGengo.getAccountStats()
-
+---------------------------------------------
 Retrieves your account stats, like orders made, etc.
 
-**Parameters:**
+### Parameters: ###
 - None
 
     from pygengo import PyGengo
