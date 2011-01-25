@@ -51,3 +51,24 @@ Twitter: http://twitter.com/ryanmcgrath
 Web: http://venodesigns.net/  
 
 If you come across any issues, please file them on the Github project issue tracker. Thanks!
+
+
+pyGengo Function Documentation
+-------------------------------------------------------------------------------------------
+
+PyGengo.getAccountStats()
+
+Retrieves your account stats, like orders made, etc.
+
+**Parameters:**
+- None
+
+    from pygengo import PyGengo
+    
+    myGengo = PyGengo(
+        public_key = 'your_public_key',
+        private_key = 'your_private_key',
+        sandbox = True, # possibly false, depending on your dev needs
+    )
+    
+    print myGengo.getAccountStats()
