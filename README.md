@@ -22,7 +22,19 @@ A version of pyGengo for Python 3 is in the works, but as Python 3 isn't even qu
 ready/reliable yet, it's not the highest priority at the moment.
 
 
-Basic Usage
+Question, Comments, Complaints, Praise?
+------------------------------------------------------------------------------------------------------
+If you have questions or comments and would like to reach me directly, please feel free to do
+so at the following outlets.
+
+Email: ryan [at] venodesigns dot net  
+Twitter: **[@ryanmcgrath](http://twitter.com/ryanmcgrath)**  
+Web: **[Veno Designs - Personal Site](http://venodesigns.net/)**  
+
+If you come across any issues, please file them on the **[Github project issue tracker](https://github.com/ryanmcgrath/pygengo/issues)**. Thanks!
+
+
+Documentation
 -----------------------------------------------------------------------------------------------------
 **Full documentation of each function is below**, but anyone should be able to cobble together 
 a working script with the following:
@@ -40,19 +52,6 @@ a working script with the following:
 All function definitions can be found inside pygengo/mockdb.py. They exist as an uber dictionary: the
 key of the dictionary entry is the function name, and the parameters are exactly the same as specified
 over on the **[myGengo API site](http://mygengo.com/about/services/api)**.
-
-Question, Comments, Complaints, Praise?
-------------------------------------------------------------------------------------------------------
-If you have questions or comments and would like to reach me directly, please feel free to do
-so at the following outlets.
-
-Email: ryan [at] venodesigns dot net  
-Twitter: **[@ryanmcgrath](http://twitter.com/ryanmcgrath)**  
-Web: **[Veno Designs - Personal Site](http://venodesigns.net/)**  
-
-If you come across any issues, please file them on the **[Github project issue tracker](https://github.com/ryanmcgrath/pygengo/issues)**. Thanks!
-
-
 
 PyGengo()
 ---------------------------------------------------------------------------------------------------
@@ -183,7 +182,48 @@ Submits a job or group of jobs to translate.
     }
     
 	# Post over our two jobs, use the same translator for both, don't pay for them
-	myGengo.postTranslationJobs([job1, job2], as_group = 1, process = 0)
+	myGengo.postTranslationJobs(jobs = [job1, job2], as_group = 1, process = 0)
+
+
+PyGengo.determineTranslationCost()
+----------------------------------------------------------------------------------------------------------
+Determine how much it'll cost to translate a given piece of text/copy. A method that believes it's a POST, even though
+it very much seems like a GET. Bears a striking similarity to PyGengo.postTranslationJobs().
+
+### Parameters:
+- _jobs_: Required. An Array of Jobs to run up to myGengo.
+
+### Example:	
+    from pygengo import PyGengo
+    
+    myGengo = PyGengo(
+        public_key = 'your_public_key',
+        private_key = 'your_private_key',
+        sandbox = True, # possibly False, depending on your dev needs
+    )
+    
+	job1 = {
+        'body_src': 'REQUIRED. The job I want translated ohgod',
+        'lc_src': 'REQUIRED. source_language_code (see getServiceLanguages() for a list of codes)',
+        'tier': 'REQUIRED. Quality level ("machine", "standard", "pro", "ultra")',
+        'comment': 'Optional. Comment to send to the translator (instructions, etc).',
+        'callback_url': 'Optional. A url to send/HTTP-POST updates to.',
+        'auto_approve': 'Optional. 1 (true) or (0) false, whether to automatically approve after translation. Defaults to false, completed jobs will await review and approval by customer for 72 hours.',
+        'custom_data': 'Optional. Up to 1K of storage for client-specific data that may be helpful for you to have mapped to this job.',
+    }
+    
+	job2 = {
+        'body_src': 'REQUIRED. The job I want translated ohgod',
+        'lc_src': 'REQUIRED. source_language_code (see getServiceLanguages() for a list of codes)',
+        'tier': 'REQUIRED. Quality level ("machine", "standard", "pro", "ultra")',
+        'comment': 'Optional. Comment to send to the translator (instructions, etc).',
+        'callback_url': 'Optional. A url to send/HTTP-POST updates to.',
+        'auto_approve': 'Optional. 1 (true) or (0) false, whether to automatically approve after translation. Defaults to false, completed jobs will await review and approval by customer for 72 hours.',
+        'custom_data': 'Optional. Up to 1K of storage for client-specific data that may be helpful for you to have mapped to this job.',
+    }
+    
+	# Post over our two jobs, use the same translator for both, don't pay for them
+	myGengo.determineTranslationCost(jobs = [job1, job2])
 
 
 PyGengo.updateTranslationJob()
@@ -462,3 +502,17 @@ Returns supported translation language pairs, tiers, and credit prices.
     
     # Send along an optional source language declaration.
 	myGengo.getServiceLanguagePairs(lc_src = 'en')
+
+
+PyGengo.unicode2utf8()
+--------------------------------------------------------------------------------------------------------
+Convenience method for making sure that text is in an acceptable format for myGengo submissions.
+
+### Parameters:
+- _text_: Required. Text to convert.
+
+### Example:
+    from pygengo import PyGengo    
+   
+    # Send along an optional source language declaration.
+	PyGengo.unicode2utf8('I'm gonna convert the hell out of this text')

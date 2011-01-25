@@ -135,11 +135,13 @@ class PyGengo(object):
 				base_url + fn['url']
 			)
 			
-			# Do a check here for one specific type of job set - we need to support posting multiple jobs
+			# Do a check here for specific job sets - we need to support posting multiple jobs
 			# at once, so see if there's an dictionary of jobs passed in, pop it out, let things go on as normal,
 			# then pick this chain back up below...
+			job = None
 			multiple_jobs = None
 			if fn['method'] == 'POST' or fn['method'] == 'PUT':
+				job = kwargs.pop('job', None)
 				multiple_jobs = kwargs.pop('jobs', None)
 
 			# Build up a proper 'authenticated' url...
@@ -150,9 +152,14 @@ class PyGengo(object):
 			query_params['api_key'] = self.public_key
 			query_params['ts'] = int(time())
 			
-			# Multiple jobs at once requires passing in a fully JSON'd string, otherwise send the generics
+			# Encoding jobs becomes a bit different than any other method call, so we catch them and do a little
+			# JSON-dumping action. Catching them also allows us to provide some sense of portability between the various
+			# job-posting methods in that they can all safely rely on passing dictionaries around. Huzzah!
 			if fn['method'] == 'POST' or fn['method'] == 'PUT':
-				query_params['jobs'] = json.dumps(multiple_jobs, separators=(',', ':'))
+				if api_call == 'postTranslationJob':
+					query_params['data'] = json.dumps(job, separators = (',', ':'))
+				else:
+					query_params['jobs'] = json.dumps(multiple_jobs, separators = (',', ':'))
 				query_string = json.dumps(query_params, separators=(',', ':'), sort_keys=True)
 			else:
 				query_string = urlencode(sorted(query_params.items(), key = itemgetter(0)))
@@ -181,28 +188,6 @@ class PyGengo(object):
 			return get.__get__(self)
 		else:
 			raise AttributeError, api_call
-	
-	@staticmethod
-	def encode_multipart_formdata(fields, files):
-		BOUNDARY = mimetools.choose_boundary()
-		CRLF = '\r\n'
-		L = []
-		for (key, value) in fields:
-			L.append('--' + BOUNDARY)
-			L.append('Content-Disposition: form-data; name="%s"' % key)
-			L.append('')
-			L.append(value)
-		for (key, filename, value) in files:
-			L.append('--' + BOUNDARY)
-			L.append('Content-Disposition: form-data; name="%s"; filename="%s"' % (key, filename))
-			L.append('Content-Type: %s' % mimetypes.guess_type(filename)[0] or 'application/octet-stream')
-			L.append('')
-			L.append(value)
-		L.append('--' + BOUNDARY + '--')
-		L.append('')
-		body = CRLF.join(L)
-		content_type = 'multipart/form-data; boundary=%s' % BOUNDARY
-		return content_type, body
 	
 	@staticmethod
 	def unicode2utf8(text):

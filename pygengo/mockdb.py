@@ -63,6 +63,12 @@ apihash  = {
 		'method': 'GET',
 	},
 
+	# Get a quote for how much a given job will cost.
+	'determineTranslationCost': {
+		'url': '/translate/service/quote',
+		'method': 'POST',
+	},
+
 	# Deal with comments and other metadata about a TranslationJob in progress.
 	'postTranslationJobComment': {
 		'url': '/translate/job/{{id}}/comment',
