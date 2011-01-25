@@ -144,6 +144,111 @@ below.
 	myGengo.postTranslationJob(job)
 
 
+PyGengo.postTranslationJobs()
+----------------------------------------------------------------------------------------------------------
+Submits a job or group of jobs to translate.
+
+### Parameters:
+- _jobs_: Required. An Array of Jobs to run up to myGengo.
+- _as_group_: Optional. 1 (true) / 0 (false, default). Whether all jobs in this group should be done by one translator. Some restrictions apply to what jobs can be grouped, including the requirement that language pairs and tiers must be the same across all jobs.
+- _process_: 1 (true, default) / 0 (false). Whether to pay for the job(s) and make them available for translation.
+
+### Example:
+    from pygengo import PyGengo
+    
+    myGengo = PyGengo(
+        public_key = 'your_public_key',
+        private_key = 'your_private_key',
+        sandbox = True, # possibly False, depending on your dev needs
+    )
+    
+	job1 = {
+        'body_src': 'REQUIRED. The job I want translated ohgod',
+        'lc_src': 'REQUIRED. source_language_code (see getServiceLanguages() for a list of codes)',
+        'tier': 'REQUIRED. Quality level ("machine", "standard", "pro", "ultra")',
+        'comment': 'Optional. Comment to send to the translator (instructions, etc).',
+        'callback_url': 'Optional. A url to send/HTTP-POST updates to.',
+        'auto_approve': 'Optional. 1 (true) or (0) false, whether to automatically approve after translation. Defaults to false, completed jobs will await review and approval by customer for 72 hours.',
+        'custom_data': 'Optional. Up to 1K of storage for client-specific data that may be helpful for you to have mapped to this job.',
+    }
+    
+	job2 = {
+        'body_src': 'REQUIRED. The job I want translated ohgod',
+        'lc_src': 'REQUIRED. source_language_code (see getServiceLanguages() for a list of codes)',
+        'tier': 'REQUIRED. Quality level ("machine", "standard", "pro", "ultra")',
+        'comment': 'Optional. Comment to send to the translator (instructions, etc).',
+        'callback_url': 'Optional. A url to send/HTTP-POST updates to.',
+        'auto_approve': 'Optional. 1 (true) or (0) false, whether to automatically approve after translation. Defaults to false, completed jobs will await review and approval by customer for 72 hours.',
+        'custom_data': 'Optional. Up to 1K of storage for client-specific data that may be helpful for you to have mapped to this job.',
+    }
+    
+	# Post over our two jobs, use the same translator for both, don't pay for them
+	myGengo.postTranslationJobs([job1, job2], as_group = 1, process = 0)
+
+
+PyGengo.updateTranslationJob()
+----------------------------------------------------------------------------------------------------------
+Updates an existing job. A bit of a hamburger method in that you can cook this one many different ways - pay
+attention to the parameter specifications.
+
+### Parameters:
+- _id_: Required. The ID of the job you're updating.
+- _action_: Required. The action you are performing on this job ("purchase", "revise", "approve", "reject"). Some
+of these actions require other parameters, see their respective sections immediately below.
+
+### "revise" Parameters:
+- _comment_: Optional. A comment describing the revision.
+
+### "approve" Parameters:
+- _rating_: Required. 1 - 5, 1 = ohgodwtfisthis, 5 = I want yo babies yo,
+- _for_translator_: Optional. Comments that you can pass on to the translator.
+- _for_mygengo_: Optional. Comments to send to the myGengo staff (kept private on myGengo's end)
+- _public_: Optional. 1 (true) / 0 (false, default). Whether myGengo can share this feedback publicly.
+
+### "reject" Parameters:
+- _reason_: Required. Reason for rejection (must be "quality", "incomplete", "other")
+- _comment_: Required. Explain your rejection, especially if all you put was "other".
+- _captcha_: Required. The captcha image text. Each job in a "reviewable" state will have a captcha_url value, which is a URL to an image. This captcha value is required only if a job is to be rejected. If the captcha is wrong, a URL for a new captcha is also included with the error message.
+- _follow_up_: Optional. "requeue" (default) or "cancel". If you choose "requeue" the job will be rejected and then passed onto another translator. If you choose "cancel" the job will be completely cancelled upon rejection.
+
+### Example:
+    from pygengo import PyGengo
+    
+    myGengo = PyGengo(
+        public_key = 'your_public_key',
+        private_key = 'your_private_key',
+        sandbox = True, # possibly False, depending on your dev needs
+    )
+    
+	myGengo.updateTranslationJob(
+        id = 42,
+        action = "approve",
+        rating = 4,
+        for_translator = "Thank You So Much!",
+        for_mygengo = "Yeeaaahhh you did",
+        public = 1
+    )
+
+
+PyGengo.deleteTranslationJob()
+----------------------------------------------------------------------------------------------------------
+Cancels the job. You can only cancel a job if it has not been started already by a translator.
+
+### Parameters:
+- _id_: Required. The ID of the job you want to delete.
+
+### Example:
+    from pygengo import PyGengo
+    
+    myGengo = PyGengo(
+        public_key = 'your_public_key',
+        private_key = 'your_private_key',
+        sandbox = True, # possibly False, depending on your dev needs
+    )
+    
+	myGengo.deleteTranslationJob(id = 42)
+
+
 PyGengo.getServiceLanguages()
 ----------------------------------------------------------------------------------------------------------
 Returns a list of supported languages and their language codes.
