@@ -290,6 +290,122 @@ Retrieves the group of jobs that were previously submitted together.
 	myGengo.getTranslationJobBatch(id = 42)
 
 
+PyGengo.postTranslationJobComment()
+----------------------------------------------------------------------------------------------------------
+Submits a new comment to the job's comment thread.
+
+### Parameters:
+- _id_: Required. The ID of the translation job to comment on.
+- _body_: Required. The body/text of your comment.
+
+### Example:
+    from pygengo import PyGengo
+    
+    myGengo = PyGengo(
+        public_key = 'your_public_key',
+        private_key = 'your_private_key',
+        sandbox = True, # possibly False, depending on your dev needs
+    )
+    
+	myGengo.postTranslationJobComment(id = 42, body = 'I love lamp!')
+
+
+PyGengo.getTranslationJobComments()
+----------------------------------------------------------------------------------------------------------
+Retrieves the comment thread for a job.
+
+### Parameters:
+- _id_: Required. The ID of the translation job you're retrieving comments from.
+
+### Example:
+    from pygengo import PyGengo
+    
+    myGengo = PyGengo(
+        public_key = 'your_public_key',
+        private_key = 'your_private_key',
+        sandbox = True, # possibly False, depending on your dev needs
+    )
+    
+	myGengo.getTranslationJobComments(id = 42)
+
+
+PyGengo.getTranslationJobFeedback()
+-----------------------------------------------------------------------------------------------------------
+Retrieves the feedback you have submitted for a particular job.
+
+### Parameters:
+- _id_: Required. The ID of the translation job you're retrieving comments from.
+
+### Example:
+    from pygengo import PyGengo
+    
+    myGengo = PyGengo(
+        public_key = 'your_public_key',
+        private_key = 'your_private_key',
+        sandbox = True, # possibly False, depending on your dev needs
+    )
+    
+	myGengo.getTranslationJobFeedback(id = 42)
+
+
+PyGengo.getTranslationJobRevisions()
+-------------------------------------------------------------------------------------------------------------
+Gets list of revision resources for a job. Revisions are created each time a translator or Senior Translator updates the text.
+
+### Parameters:
+- _id_: Required. The ID of the translation job you're getting revisions from.
+
+### Example:
+    from pygengo import PyGengo
+    
+    myGengo = PyGengo(
+        public_key = 'your_public_key',
+        private_key = 'your_private_key',
+        sandbox = True, # possibly False, depending on your dev needs
+    )
+    
+	myGengo.getTranslationJobRevisions(id = 42)
+
+
+PyGengo.getTranslationJobRevision()
+----------------------------------------------------------------------------------------------------------
+Gets a specific revision for a job.
+
+### Parameters:
+- _id_: Required. The ID of the translation job you're getting revisions from.
+- _rev_id_: Required. The ID of the revision you're looking up.
+
+### Example:
+    from pygengo import PyGengo
+    
+    myGengo = PyGengo(
+        public_key = 'your_public_key',
+        private_key = 'your_private_key',
+        sandbox = True, # possibly False, depending on your dev needs
+    )
+    
+	myGengo.getTranslationJobRevision(id = 42, rev_id = 1)
+
+
+PyGengo.getTranslationJobPreviewImage()
+----------------------------------------------------------------------------------------------------------
+Renders a GIF preview image of the translated text.
+
+### Parameters:
+- _id_: Required. The ID of the translation job you want a preview image for.
+
+### Example:
+    from pygengo import PyGengo
+    
+    myGengo = PyGengo(
+        public_key = 'your_public_key',
+        private_key = 'your_private_key',
+        sandbox = True, # possibly False, depending on your dev needs
+    )
+    
+	myGengo.getTranslationJobPreview(id = 42)
+
+
 PyGengo.deleteTranslationJob()
 ----------------------------------------------------------------------------------------------------------
 Cancels the job. You can only cancel a job if it has not been started already by a translator.
