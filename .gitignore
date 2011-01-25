@@ -1,0 +1,6 @@
+*.pyc
+build
+dist
+*.swp
+pygengo.egg-info
+pygengo/test_keys.py
