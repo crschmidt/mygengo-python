@@ -56,6 +56,26 @@ If you come across any issues, please file them on the Github project issue trac
 pyGengo Function Documentation
 ------------------------------------------------------------------------------------------------------
 
+
+### PyGengo() ###
+Creates an instance of pyGengo for you to communicate with the myGengo API.
+
+### Parameters: ###
+- _public_key_: Required. Your public key, generated on the myGengo API site.
+- _private_key_: Required. Your private key, generated on the myGengo API site.
+- _sandbox_: Optional. Defaults to False, dictates whethe to send the call to the myGengo Sandbox API.
+- _api_version_: Optional. API version to use with myGengo (defaults to 1).
+- _headers_: Optional. Additional HTTP headers to send along, passed as a dictionary object.
+
+    from pygengo import PyGengo
+    
+    myGengo = PyGengo(
+        public_key = 'your_public_key',
+        private_key = 'your_private_key',
+        sandbox = True, # possibly False, depending on your dev needs
+    )
+
+
 ### PyGengo.getAccountStats() ###
 Retrieves your account stats, like orders made, etc.
 
@@ -67,7 +87,7 @@ Retrieves your account stats, like orders made, etc.
     myGengo = PyGengo(
         public_key = 'your_public_key',
         private_key = 'your_private_key',
-        sandbox = True, # possibly false, depending on your dev needs
+        sandbox = True, # possibly False, depending on your dev needs
     )
     
     print myGengo.getAccountStats()
