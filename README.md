@@ -67,7 +67,7 @@ Creates an instance of pyGengo for you to communicate with the myGengo API.
 - _api_version_: Optional. API version to use with myGengo (defaults to 1).
 - _headers_: Optional. Additional HTTP headers to send along, passed as a dictionary object.  
 
-
+#### Example: ####  
     from pygengo import PyGengo
     
     myGengo = PyGengo(
