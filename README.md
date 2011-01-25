@@ -53,21 +53,19 @@ Web: http://venodesigns.net/
 If you come across any issues, please file them on the Github project issue tracker. Thanks!
 
 
-pyGengo Function Documentation
-------------------------------------------------------------------------------------------------------
 
-
-### PyGengo() ###
+PyGengo()
+---------------------------------------------------------------------------------------------------
 Creates an instance of pyGengo for you to communicate with the myGengo API.
 
-#### Parameters: ####
+#### Parameters:
 - _public_key_: Required. Your public key, generated on the myGengo API site.
 - _private_key_: Required. Your private key, generated on the myGengo API site.
 - _sandbox_: Optional. Defaults to False, dictates whethe to send the call to the myGengo Sandbox API.
 - _api_version_: Optional. API version to use with myGengo (defaults to 1).
 - _headers_: Optional. Additional HTTP headers to send along, passed as a dictionary object.  
 
-#### Example: ####  
+#### Example:   
     from pygengo import PyGengo
     
     myGengo = PyGengo(
@@ -77,12 +75,14 @@ Creates an instance of pyGengo for you to communicate with the myGengo API.
     )
 
 
-### PyGengo.getAccountStats() ###
+PyGengo.getAccountStats()
+---------------------------------------------------------------------------------------------------
 Retrieves your account stats, like orders made, etc.
 
-#### Parameters: ####
+#### Parameters:
 None  
 
+### Example:  
     from pygengo import PyGengo
     
     myGengo = PyGengo(
