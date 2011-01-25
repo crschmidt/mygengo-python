@@ -47,10 +47,10 @@ If you have questions or comments and would like to reach me directly, please fe
 so at the following outlets.
 
 Email: ryan [at] venodesigns dot net  
-Twitter: http://twitter.com/ryanmcgrath  
-Web: http://venodesigns.net/  
+Twitter: **[@ryanmcgrath](http://twitter.com/ryanmcgrath)**  
+Web: **[Veno Designs - Personal Site](http://venodesigns.net/)**  
 
-If you come across any issues, please file them on the Github project issue tracker. Thanks!
+If you come across any issues, please file them on the **[Github project issue tracker](https://github.com/ryanmcgrath/pygengo/issues)**. Thanks!
 
 
 
