@@ -26,7 +26,7 @@ setup(
 	url = 'http://github.com/ryanmcgrath/pygengo/tree/master',
 	keywords = 'mygengo translation api japanese english',
 	description = 'An unofficial Python library for interfacing with the MyGengo API.',
-	long_description = open('README.markdown').read(),
+	long_description = open('README.md').read(),
 	classifiers = [
 		'Development Status :: 4 - Beta',
 		'Intended Audience :: Developers',
