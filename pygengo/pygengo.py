@@ -9,7 +9,7 @@
 """
 
 __author__ = 'Ryan McGrath <ryan@venodesigns.net>'
-__version__ = '1.0.0'
+__version__ = '1.1.0'
 
 import httplib2
 import mimetypes
@@ -128,23 +128,26 @@ class PyGengo(object):
 			# at once, so see if there's an dictionary of jobs passed in, pop it out, let things go on as normal,
 			# then pick this chain back up below...
 			job = kwargs.pop('job', None)
-			multiple_jobs = kwargs.pop('jobs', None)
+			jobs = kwargs.pop('jobs', None)
+			comment = kwargs.pop('comment', None)
+			action = kwargs.pop('action', None)
 			
 			# Set up a true base URL, abstracting away the need to care about the sandbox mode
 			# or API versioning at this stage.
 			base_url = self.api_url.replace('{{version}}', 'v%d' % self.api_version)
 			
 			# Go through and replace any mustaches that are in our API url with their appropriate key/value pairs...
+			# NOTE: We pop() here because we don't want the extra data included and messing up our hash down the road.
 			base = re.sub(
 				'\{\{(?P<m>[a-zA-Z]+)\}\}',
-				lambda m: "%s" % kwargs.get(m.group(1), '1'), # I'll just leave this here...
+				lambda m: "%s" % kwargs.pop(m.group(1), 'no_argument_specified'), # In case of debugging needs
 				base_url + fn['url']
 			)
 			
 			# Build up a proper 'authenticated' url...
 			#
 			# Note: for further information on what's going on here, it's best to familiarize yourself
-			# with the myGengo authentication API.
+			# with the myGengo authentication API. (http://mygengo.com/services/api/dev-docs/authentication)
 			query_params = dict([k, v.encode('utf-8')] for k, v in kwargs.items())
 			query_params['api_key'] = self.public_key
 			query_params['ts'] = str(int(time()))
@@ -153,10 +156,14 @@ class PyGengo(object):
 			# JSON-dumping action. Catching them also allows us to provide some sense of portability between the various
 			# job-posting methods in that they can all safely rely on passing dictionaries around. Huzzah!
 			if fn['method'] == 'POST' or fn['method'] == 'PUT':
-				if api_call == 'postTranslationJob':
+				if job is not None:
 					query_params['data'] = json.dumps({'job': job}, separators = (',', ':'))
-				else:
-					query_params['jobs'] = json.dumps(multiple_jobs, separators = (',', ':'))
+				elif jobs is not None:
+					query_params['data'] = json.dumps({'jobs': jobs}, separators = (',', ':'))
+				elif comment is not None:
+					query_params['data'] = json.dumps(comment, separators = (',', ':'))
+				elif action is not None:
+					query_params['data'] = json.dumps(action, separators = (',', ':'))
 				
 				query_json = json.dumps(query_params, separators = (',', ':'), sort_keys = True)
 				query_hmac = hmac.new(self.private_key, query_json, sha1)

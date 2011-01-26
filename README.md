@@ -22,6 +22,14 @@ A version of pyGengo for Python 3 is in the works, but as Python 3 isn't even qu
 ready/reliable yet, it's not the highest priority at the moment.
 
 
+Tests - Running Them, etc
+------------------------------------------------------------------------------------------------------
+pyGengo has a full suite of Unit Tests. To run them, grab the source, head into the pygengo/pygengo
+directory, and execute the file with the Python interpreter, ala:
+
+    python tests.py
+
+
 Question, Comments, Complaints, Praise?
 ------------------------------------------------------------------------------------------------------
 If you have questions or comments and would like to reach me directly, please feel free to do
@@ -119,7 +127,7 @@ Sends a new job over to myGengo for translation. Jobs are dictionaries that get 
 below.
 
 ### Parameters:
-- _job_: Required. A dictionary containing a full job description for myGengo.
+- _job_: Required. A dictionary containing a full job description for myGengo (**see below**).
 
 ### Example:
     from pygengo import PyGengo
@@ -131,16 +139,20 @@ below.
     )
     
 	job = {
-        'body_src': 'REQUIRED. The job I want translated ohgod',
-        'lc_src': 'REQUIRED. source_language_code (see getServiceLanguages() for a list of codes)',
-        'tier': 'REQUIRED. Quality level ("machine", "standard", "pro", "ultra")',
-        'comment': 'Optional. Comment to send to the translator (instructions, etc).',
-        'callback_url': 'Optional. A url to send/HTTP-POST updates to.',
-        'auto_approve': 'Optional. 1 (true) or (0) false, whether to automatically approve after translation. Defaults to false, completed jobs will await review and approval by customer for 72 hours.',
-        'custom_data': 'Optional. Up to 1K of storage for client-specific data that may be helpful for you to have mapped to this job.',
-    }
+        'type': 'text', # REQUIRED. Type to translate, you'll probably always put 'text' here. ;P
+        'slug': 'Single :: English to Japanese', # REQUIRED. Slug for internally storing, can be generic.
+        'body_src': 'Testing pyGengo API library calls.', # REQUIRED. The text you're translating. ;P
+        'lc_src': 'en', # REQUIRED. source_language_code (see getServiceLanguages() for a list of codes)  
+        'lc_tgt': 'ja', # REQUIRED. target_language_code (see getServiceLanguages() for a list of codes)
+        'tier': 'standard', # REQUIRED. tier type ("machine", "standard", "pro", or "ultra")
+        
+        'auto_approve': 0, # OPTIONAL. Hopefully self explanatory (1 = yes, 0 = no),
+        'comment': 'HEY THERE TRANSLATOR', # OPTIONAL. Comment to leave for translator.
+        'callback_url': 'http://...', # OPTIONAL. Callback URL that updates are sent to.
+		'custom_data': 'your optional custom data, limited to 1kb.' # OPTIONAL
+	}
     
-	myGengo.postTranslationJob(job)
+	myGengo.postTranslationJob(job = job)
 
 
 PyGengo.postTranslationJobs()
@@ -148,9 +160,7 @@ PyGengo.postTranslationJobs()
 Submits a job or group of jobs to translate.
 
 ### Parameters:
-- _jobs_: Required. An Array of Jobs to run up to myGengo.
-- _as_group_: Optional. 1 (true) / 0 (false, default). Whether all jobs in this group should be done by one translator. Some restrictions apply to what jobs can be grouped, including the requirement that language pairs and tiers must be the same across all jobs.
-- _process_: 1 (true, default) / 0 (false). Whether to pay for the job(s) and make them available for translation.
+- _jobs_: Required. A Dictionary of jobs and associated properties to run up to myGengo.
 
 ### Example:
     from pygengo import PyGengo
@@ -161,28 +171,41 @@ Submits a job or group of jobs to translate.
         sandbox = True, # possibly False, depending on your dev needs
     )
     
-	job1 = {
-        'body_src': 'REQUIRED. The job I want translated ohgod',
-        'lc_src': 'REQUIRED. source_language_code (see getServiceLanguages() for a list of codes)',
-        'tier': 'REQUIRED. Quality level ("machine", "standard", "pro", "ultra")',
-        'comment': 'Optional. Comment to send to the translator (instructions, etc).',
-        'callback_url': 'Optional. A url to send/HTTP-POST updates to.',
-        'auto_approve': 'Optional. 1 (true) or (0) false, whether to automatically approve after translation. Defaults to false, completed jobs will await review and approval by customer for 72 hours.',
-        'custom_data': 'Optional. Up to 1K of storage for client-specific data that may be helpful for you to have mapped to this job.',
-    }
-    
-	job2 = {
-        'body_src': 'REQUIRED. The job I want translated ohgod',
-        'lc_src': 'REQUIRED. source_language_code (see getServiceLanguages() for a list of codes)',
-        'tier': 'REQUIRED. Quality level ("machine", "standard", "pro", "ultra")',
-        'comment': 'Optional. Comment to send to the translator (instructions, etc).',
-        'callback_url': 'Optional. A url to send/HTTP-POST updates to.',
-        'auto_approve': 'Optional. 1 (true) or (0) false, whether to automatically approve after translation. Defaults to false, completed jobs will await review and approval by customer for 72 hours.',
-        'custom_data': 'Optional. Up to 1K of storage for client-specific data that may be helpful for you to have mapped to this job.',
+    jobs_data = {
+	    'job_1': {
+	        'type': 'text', # REQUIRED. Type to translate, you'll probably always put 'text' here. ;P
+	        'slug': 'Single :: English to Japanese', # REQUIRED. Slug for internally storing, can be generic.
+	        'body_src': 'Testing pyGengo API library calls.', # REQUIRED. The text you're translating. ;P
+	        'lc_src': 'en', # REQUIRED. source_language_code (see getServiceLanguages() for a list of codes)  
+	        'lc_tgt': 'ja', # REQUIRED. target_language_code (see getServiceLanguages() for a list of codes)
+	        'tier': 'standard', # REQUIRED. tier type ("machine", "standard", "pro", or "ultra")
+        
+	        'auto_approve': 0, # OPTIONAL. Hopefully self explanatory (1 = yes, 0 = no),
+	        'comment': 'HEY THERE TRANSLATOR', # OPTIONAL. Comment to leave for translator.
+	        'callback_url': 'http://...', # OPTIONAL. Callback URL that updates are sent to.
+			'custom_data': 'your optional custom data, limited to 1kb.' # OPTIONAL
+        },
+	    'job_2': {
+	        'type': 'text', # REQUIRED. Type to translate, you'll probably always put 'text' here. ;P
+	        'slug': 'Single :: English to Japanese', # REQUIRED. Slug for internally storing, can be generic.
+	        'body_src': 'Testing pyGengo API library calls.', # REQUIRED. The text you're translating. ;P
+	        'lc_src': 'en', # REQUIRED. source_language_code (see getServiceLanguages() for a list of codes)  
+	        'lc_tgt': 'ja', # REQUIRED. target_language_code (see getServiceLanguages() for a list of codes)
+	        'tier': 'standard', # REQUIRED. tier type ("machine", "standard", "pro", or "ultra")
+        
+	        'auto_approve': 0, # OPTIONAL. Hopefully self explanatory (1 = yes, 0 = no),
+	        'comment': 'HEY THERE TRANSLATOR', # OPTIONAL. Comment to leave for translator.
+	        'callback_url': 'http://...', # OPTIONAL. Callback URL that updates are sent to.
+			'custom_data': 'your optional custom data, limited to 1kb.' # OPTIONAL
+        },
+        'process': 1, # OPTIONAL. 1 (true, default) / 0 (false). Whether to pay for the job(s) and make them available for translation.
+        'as_group': 1, # OPTIONAL. 1 (true) / 0 (false, default). Whether all jobs in this group should be done by one translator.
     }
     
 	# Post over our two jobs, use the same translator for both, don't pay for them
-	myGengo.postTranslationJobs(jobs = [job1, job2], as_group = 1, process = 0)
+	myGengo.postTranslationJobs(jobs = jobs_data)
+
+**Note:** 'as_group' has a catch: some restrictions apply to what jobs can be grouped, including the requirement that language pairs and tiers must be the same across all jobs.
 
 
 PyGengo.determineTranslationCost()
@@ -191,7 +214,7 @@ Determine how much it'll cost to translate a given piece of text/copy. A method 
 it very much seems like a GET. Bears a striking similarity to PyGengo.postTranslationJobs().
 
 ### Parameters:
-- _jobs_: Required. An Array of Jobs to run up to myGengo.
+- _jobs_: Required. An Dictionary of Jobs to run up to myGengo.
 
 ### Example:	
     from pygengo import PyGengo
@@ -202,28 +225,37 @@ it very much seems like a GET. Bears a striking similarity to PyGengo.postTransl
         sandbox = True, # possibly False, depending on your dev needs
     )
     
-	job1 = {
-        'body_src': 'REQUIRED. The job I want translated ohgod',
-        'lc_src': 'REQUIRED. source_language_code (see getServiceLanguages() for a list of codes)',
-        'tier': 'REQUIRED. Quality level ("machine", "standard", "pro", "ultra")',
-        'comment': 'Optional. Comment to send to the translator (instructions, etc).',
-        'callback_url': 'Optional. A url to send/HTTP-POST updates to.',
-        'auto_approve': 'Optional. 1 (true) or (0) false, whether to automatically approve after translation. Defaults to false, completed jobs will await review and approval by customer for 72 hours.',
-        'custom_data': 'Optional. Up to 1K of storage for client-specific data that may be helpful for you to have mapped to this job.',
-    }
-    
-	job2 = {
-        'body_src': 'REQUIRED. The job I want translated ohgod',
-        'lc_src': 'REQUIRED. source_language_code (see getServiceLanguages() for a list of codes)',
-        'tier': 'REQUIRED. Quality level ("machine", "standard", "pro", "ultra")',
-        'comment': 'Optional. Comment to send to the translator (instructions, etc).',
-        'callback_url': 'Optional. A url to send/HTTP-POST updates to.',
-        'auto_approve': 'Optional. 1 (true) or (0) false, whether to automatically approve after translation. Defaults to false, completed jobs will await review and approval by customer for 72 hours.',
-        'custom_data': 'Optional. Up to 1K of storage for client-specific data that may be helpful for you to have mapped to this job.',
+    jobs_data = {
+	    'job_1': {
+	        'type': 'text', # REQUIRED. Type to translate, you'll probably always put 'text' here. ;P
+	        'slug': 'Single :: English to Japanese', # REQUIRED. Slug for internally storing, can be generic.
+	        'body_src': 'Testing pyGengo API library calls.', # REQUIRED. The text you're translating. ;P
+	        'lc_src': 'en', # REQUIRED. source_language_code (see getServiceLanguages() for a list of codes)  
+	        'lc_tgt': 'ja', # REQUIRED. target_language_code (see getServiceLanguages() for a list of codes)
+	        'tier': 'standard', # REQUIRED. tier type ("machine", "standard", "pro", or "ultra")
+        
+	        'auto_approve': 0, # OPTIONAL. Hopefully self explanatory (1 = yes, 0 = no),
+	        'comment': 'HEY THERE TRANSLATOR', # OPTIONAL. Comment to leave for translator.
+	        'callback_url': 'http://...', # OPTIONAL. Callback URL that updates are sent to.
+			'custom_data': 'your optional custom data, limited to 1kb.' # OPTIONAL
+        },
+	    'job_2': {
+	        'type': 'text', # REQUIRED. Type to translate, you'll probably always put 'text' here. ;P
+	        'slug': 'Single :: English to Japanese', # REQUIRED. Slug for internally storing, can be generic.
+	        'body_src': 'Testing pyGengo API library calls.', # REQUIRED. The text you're translating. ;P
+	        'lc_src': 'en', # REQUIRED. source_language_code (see getServiceLanguages() for a list of codes)  
+	        'lc_tgt': 'ja', # REQUIRED. target_language_code (see getServiceLanguages() for a list of codes)
+	        'tier': 'standard', # REQUIRED. tier type ("machine", "standard", "pro", or "ultra")
+        
+	        'auto_approve': 0, # OPTIONAL. Hopefully self explanatory (1 = yes, 0 = no),
+	        'comment': 'HEY THERE TRANSLATOR', # OPTIONAL. Comment to leave for translator.
+	        'callback_url': 'http://...', # OPTIONAL. Callback URL that updates are sent to.
+			'custom_data': 'your optional custom data, limited to 1kb.' # OPTIONAL
+        },
     }
     
 	# Post over our two jobs, use the same translator for both, don't pay for them
-	myGengo.determineTranslationCost(jobs = [job1, job2])
+	myGengo.determineTranslationCost(jobs = jobs_data)
 
 
 PyGengo.updateTranslationJob()
@@ -233,8 +265,11 @@ attention to the parameter specifications.
 
 ### Parameters:
 - _id_: Required. The ID of the job you're updating.
-- _action_: Required. The action you are performing on this job ("purchase", "revise", "approve", "reject"). Some
+- _action_: Required. A dictionary describing the actions you are performing on this job ("purchase", "revise", "approve", "reject"). Some
 of these actions require other parameters, see their respective sections immediately below.
+
+### "purchase" Parameters:
+None
 
 ### "revise" Parameters:
 - _comment_: Optional. A comment describing the revision.
@@ -260,14 +295,13 @@ of these actions require other parameters, see their respective sections immedia
         sandbox = True, # possibly False, depending on your dev needs
     )
     
-	myGengo.updateTranslationJob(
-        id = 42,
-        action = "approve",
-        rating = 4,
-        for_translator = "Thank You So Much!",
-        for_mygengo = "Yeeaaahhh you did",
-        public = 1
-    )
+    # Some example action objects, choose one to test by uncommenting
+    updateObj = {'action': 'purchase'}
+    # updateObj = {'action': 'revise', 'comment': 'Thanks but no thanks'}
+    # updateObj = {'action': 'approve', 'rating': 1, 'for_translator': 'Thanks!'}
+    # updateObj = {'action': 'reject', 'reason': 'quality', 'comment': 'My grandmother does better.', 'captcha': 'bert'}
+    
+	myGengo.updateTranslationJob(id = 42, action = updateObj)
 
 
 PyGengo.getTranslationJob()
@@ -336,7 +370,7 @@ Submits a new comment to the job's comment thread.
 
 ### Parameters:
 - _id_: Required. The ID of the translation job to comment on.
-- _body_: Required. The body/text of your comment.
+- _comment_: Required. A dictionary with the body/text of your comment.
 
 ### Example:
     from pygengo import PyGengo
@@ -347,7 +381,9 @@ Submits a new comment to the job's comment thread.
         sandbox = True, # possibly False, depending on your dev needs
     )
     
-	myGengo.postTranslationJobComment(id = 42, body = 'I love lamp!')
+	myGengo.postTranslationJobComment(id = 42, comment = {
+        'body': 'I love lamp!',
+    })
 
 
 PyGengo.getTranslationJobComments()
