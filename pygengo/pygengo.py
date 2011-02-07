@@ -9,7 +9,7 @@
 """
 
 __author__ = 'Ryan McGrath <ryan@venodesigns.net>'
-__version__ = '1.1.0'
+__version__ = '1.1.1'
 
 import httplib2
 import mimetypes
@@ -24,7 +24,6 @@ from operator import itemgetter
 
 # pygengo_mockdb is a file with a dictionary of every API endpoint for myGengo.
 from mockdb import api_urls, apihash
-from error_codes import errors
 
 # There are some special setups (like, oh, a Django application) where
 # simplejson exists behind the scenes anyway. Past Python 2.6, this should
@@ -149,7 +148,8 @@ class PyGengo(object):
 			# Note: for further information on what's going on here, it's best to familiarize yourself
 			# with the myGengo authentication API. (http://mygengo.com/services/api/dev-docs/authentication)
 			query_params = dict([k, v.encode('utf-8')] for k, v in kwargs.items())
-			query_params['api_key'] = self.public_key
+			if self.public_key is not None:
+				query_params['api_key'] = self.public_key
 			query_params['ts'] = str(int(time()))
 			
 			# Encoding jobs becomes a bit different than any other method call, so we catch them and do a little
@@ -176,9 +176,10 @@ class PyGengo(object):
 				resp, content = self.client.request(base, fn['method'], headers = headers, body = query_data)
 			else:
 				query_string = urlencode(sorted(query_params.items(), key = itemgetter(0)))
-				query_hmac = hmac.new(self.private_key, query_string, sha1)
-				query_params['api_sig'] = query_hmac.hexdigest()
-				query_string = urlencode(query_params)
+				if self.private_key is not None:
+					query_hmac = hmac.new(self.private_key, query_string, sha1)
+					query_params['api_sig'] = query_hmac.hexdigest()
+					query_string = urlencode(query_params)
 				resp, content = self.client.request(base + '?%s' % query_string, fn['method'], headers = self.headers)
 			
 			# Load this into native Python...
@@ -186,7 +187,7 @@ class PyGengo(object):
 			
 			# See if we got any weird or odd errors back that we can cleanly raise on or something...
 			if 'opstat' in results and results['opstat'] != 'ok':
-				raise PyGengoError(errors[`results['err']['code']`], results['err']['code'])
+				raise PyGengoError(results['err']['msg'], results['err']['code'])
 			
 			# If not, screw it, return the junks!
 			return json.loads(content)
