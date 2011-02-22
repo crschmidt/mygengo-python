@@ -1,0 +1,3 @@
+[submodule "django_pygengo"]
+	path = django_pygengo
+	url = git@github.com:ryanmcgrath/django-pygengo.git
