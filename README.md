@@ -171,39 +171,41 @@ Submits a job or group of jobs to translate.
         sandbox = True, # possibly False, depending on your dev needs
     )
     
-    jobs_data = {
-	    'job_1': {
-	        'type': 'text', # REQUIRED. Type to translate, you'll probably always put 'text' here. ;P
-	        'slug': 'Single :: English to Japanese', # REQUIRED. Slug for internally storing, can be generic.
-	        'body_src': 'Testing pyGengo API library calls.', # REQUIRED. The text you're translating. ;P
-	        'lc_src': 'en', # REQUIRED. source_language_code (see getServiceLanguages() for a list of codes)  
-	        'lc_tgt': 'ja', # REQUIRED. target_language_code (see getServiceLanguages() for a list of codes)
-	        'tier': 'standard', # REQUIRED. tier type ("machine", "standard", "pro", or "ultra")
-        
-	        'auto_approve': 0, # OPTIONAL. Hopefully self explanatory (1 = yes, 0 = no),
-	        'comment': 'HEY THERE TRANSLATOR', # OPTIONAL. Comment to leave for translator.
-	        'callback_url': 'http://...', # OPTIONAL. Callback URL that updates are sent to.
-			'custom_data': 'your optional custom data, limited to 1kb.' # OPTIONAL
+    data = {
+		'jobs': {
+			'job_1': {
+				'type': 'text', # REQUIRED. Type to translate, you'll probably always put 'text' here. ;P
+				'slug': 'Single :: English to Japanese', # REQUIRED. Slug for internally storing, can be generic.
+				'body_src': 'Testing pyGengo API library calls.', # REQUIRED. The text you're translating. ;P
+				'lc_src': 'en', # REQUIRED. source_language_code (see getServiceLanguages() for a list of codes)  
+				'lc_tgt': 'ja', # REQUIRED. target_language_code (see getServiceLanguages() for a list of codes)
+				'tier': 'standard', # REQUIRED. tier type ("machine", "standard", "pro", or "ultra")
+				
+				'auto_approve': 0, # OPTIONAL. Hopefully self explanatory (1 = yes, 0 = no),
+				'comment': 'HEY THERE TRANSLATOR', # OPTIONAL. Comment to leave for translator.
+				'callback_url': 'http://...', # OPTIONAL. Callback URL that updates are sent to.
+				'custom_data': 'your optional custom data, limited to 1kb.' # OPTIONAL
+			},
+			'job_2': {
+				'type': 'text', # REQUIRED. Type to translate, you'll probably always put 'text' here. ;P
+				'slug': 'Single :: English to Japanese', # REQUIRED. Slug for internally storing, can be generic.
+				'body_src': 'Testing pyGengo API library calls.', # REQUIRED. The text you're translating. ;P
+				'lc_src': 'en', # REQUIRED. source_language_code (see getServiceLanguages() for a list of codes)  
+				'lc_tgt': 'ja', # REQUIRED. target_language_code (see getServiceLanguages() for a list of codes)
+				'tier': 'standard', # REQUIRED. tier type ("machine", "standard", "pro", or "ultra")
+			
+				'auto_approve': 0, # OPTIONAL. Hopefully self explanatory (1 = yes, 0 = no),
+				'comment': 'HEY THERE TRANSLATOR', # OPTIONAL. Comment to leave for translator.
+				'callback_url': 'http://...', # OPTIONAL. Callback URL that updates are sent to.
+				'custom_data': 'your optional custom data, limited to 1kb.' # OPTIONAL
+			},
         },
-	    'job_2': {
-	        'type': 'text', # REQUIRED. Type to translate, you'll probably always put 'text' here. ;P
-	        'slug': 'Single :: English to Japanese', # REQUIRED. Slug for internally storing, can be generic.
-	        'body_src': 'Testing pyGengo API library calls.', # REQUIRED. The text you're translating. ;P
-	        'lc_src': 'en', # REQUIRED. source_language_code (see getServiceLanguages() for a list of codes)  
-	        'lc_tgt': 'ja', # REQUIRED. target_language_code (see getServiceLanguages() for a list of codes)
-	        'tier': 'standard', # REQUIRED. tier type ("machine", "standard", "pro", or "ultra")
-        
-	        'auto_approve': 0, # OPTIONAL. Hopefully self explanatory (1 = yes, 0 = no),
-	        'comment': 'HEY THERE TRANSLATOR', # OPTIONAL. Comment to leave for translator.
-	        'callback_url': 'http://...', # OPTIONAL. Callback URL that updates are sent to.
-			'custom_data': 'your optional custom data, limited to 1kb.' # OPTIONAL
-        },
-        'process': 1, # OPTIONAL. 1 (true, default) / 0 (false). Whether to pay for the job(s) and make them available for translation.
+		'process': 1, # OPTIONAL. 1 (true, default) / 0 (false). Whether to pay for the job(s) and make them available for translation.
         'as_group': 1, # OPTIONAL. 1 (true) / 0 (false, default). Whether all jobs in this group should be done by one translator.
     }
     
 	# Post over our two jobs, use the same translator for both, don't pay for them
-	myGengo.postTranslationJobs(jobs = jobs_data)
+	myGengo.postTranslationJobs(jobs = data)
 
 **Note:** 'as_group' has a catch: some restrictions apply to what jobs can be grouped, including the requirement that language pairs and tiers must be the same across all jobs.
 

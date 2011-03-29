@@ -5,7 +5,7 @@ from setuptools import setup
 from setuptools import find_packages
 
 __author__ = 'Ryan McGrath <ryan@venodesigns.net>'
-__version__ = '1.2'
+__version__ = '1.3'
 
 setup(
 	# Basic package information.
@@ -24,7 +24,7 @@ setup(
 	author_email = 'ryan@venodesigns.net',
 	license = 'LGPL License',
 	url = 'http://github.com/ryanmcgrath/pygengo/tree/master',
-	keywords = 'mygengo translation api japanese english',
+	keywords = 'mygengo translation language api japanese english',
 	description = 'An unofficial Python library for interfacing with the MyGengo API.',
 	long_description = open('README.md').read(),
 	classifiers = [

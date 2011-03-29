@@ -9,13 +9,15 @@
 """
 
 __author__ = 'Ryan McGrath <ryan@venodesigns.net>'
-__version__ = '1.2'
+__version__ = '1.3'
 
 import httplib2
 import mimetypes
 import mimetools
 import re
 import hmac
+
+from pprint import pprint
 
 from hashlib import sha1
 from urllib import urlencode
@@ -147,7 +149,7 @@ class PyGengo(object):
 			#
 			# Note: for further information on what's going on here, it's best to familiarize yourself
 			# with the myGengo authentication API. (http://mygengo.com/services/api/dev-docs/authentication)
-			query_params = dict([k, v.encode('utf-8')] for k, v in kwargs.items())
+			query_params = dict([k, urlencode(v.encode('utf-8'))] for k, v in kwargs.items())
 			if self.public_key is not None:
 				query_params['api_key'] = self.public_key
 			query_params['ts'] = str(int(time()))
@@ -159,13 +161,13 @@ class PyGengo(object):
 				if job is not None:
 					query_params['data'] = json.dumps({'job': job}, separators = (',', ':'))
 				elif jobs is not None:
-					query_params['data'] = json.dumps({'jobs': jobs}, separators = (',', ':'))
+					query_params['data'] = json.dumps(jobs, separators = (',', ':'))
 				elif comment is not None:
 					query_params['data'] = json.dumps(comment, separators = (',', ':'))
 				elif action is not None:
 					query_params['data'] = json.dumps(action, separators = (',', ':'))
 				
-				query_json = json.dumps(query_params, separators = (',', ':'), sort_keys = True)
+				query_json = json.dumps(query_params, separators = (',', ':'), sort_keys = True).replace('/', '\\/')
 				query_hmac = hmac.new(self.private_key, query_json, sha1)
 				query_params['api_sig'] = query_hmac.hexdigest()
 				query_data = urlencode(query_params)
@@ -181,8 +183,6 @@ class PyGengo(object):
 					query_params['api_sig'] = query_hmac.hexdigest()
 					query_string = urlencode(query_params)
 				resp, content = self.client.request(base + '?%s' % query_string, fn['method'], headers = self.headers)
-			
-			# Load this into native Python...
 			results = json.loads(content)
 			
 			# See if we got any weird or odd errors back that we can cleanly raise on or something...
