@@ -9,7 +9,7 @@
 """
 
 __author__ = 'Ryan McGrath <ryan@venodesigns.net>'
-__version__ = '1.3'
+__version__ = '1.3.1'
 
 import httplib2
 import mimetypes
