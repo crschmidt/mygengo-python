@@ -190,7 +190,7 @@ class PyGengo(object):
 				raise PyGengoError(results['err']['msg'], results['err']['code'])
 			
 			# If not, screw it, return the junks!
-			return json.loads(content)
+			return results
 			
 		if api_call in apihash:
 			return get.__get__(self)
