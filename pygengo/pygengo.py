@@ -9,7 +9,7 @@
 """
 
 __author__ = 'Ryan McGrath <ryan@venodesigns.net>'
-__version__ = '1.3.1'
+__version__ = '1.3.2'
 
 import httplib2
 import mimetypes
@@ -78,7 +78,7 @@ class PyGengoAuthError(PyGengoError):
 
 
 class PyGengo(object):
-	def __init__(self, public_key = None, private_key = None, sandbox = False, api_version = 1, headers = None):
+	def __init__(self, public_key = None, private_key = None, sandbox = False, api_version = 1, headers = None, debug = False):
 		"""PyGengo(public_key = None, private_key = None, sandbox = False, headers = None)
 
 			Instantiates an instance of PyGengo. While you can have multiple instances of PyGengo going at once, this is not recommended
@@ -89,6 +89,7 @@ class PyGengo(object):
 				private_key - Your 'private' key for myGengo. Retrieve this from your account information if you want to do authenticated calls.
 				sandbox - Whether to use the myGengo sandbox or not. Check with myGengo for the differences with this as it may change.
 				headers - User agent header, dictionary style ala {'User-Agent': 'Bert'}
+				debug - a flag (True/False) which will cause things to properly blow the hell up on exceptions. Useful for debugging. ;P
 		"""
 		self.api_url = api_urls['sandbox'] if sandbox is True else api_urls['base']
 		self.api_version = api_version
@@ -100,6 +101,7 @@ class PyGengo(object):
 			self.headers = {'User-agent': 'PyGengo Python myGengo Library v%s' % __version__}
 		# No matter whether we get some supplied or use the generic, tell it we want JSON. ;P
 		self.headers['Accept'] = 'application/json'
+		self.debug = debug
 		self.client = httplib2.Http()
 	
 	def __getattr__(self, api_call):
@@ -175,6 +177,10 @@ class PyGengo(object):
 				# Httplib2 doesn't assume this for POST requests, but in the case of the myGengo API it's a bit of a hidden necessity.
 				headers = self.headers
 				headers['Content-Type'] = 'application/x-www-form-urlencoded'
+				
+				if self.debug is True:
+					print query_data
+				
 				resp, content = self.client.request(base, fn['method'], headers = headers, body = query_data)
 			else:
 				query_string = urlencode(sorted(query_params.items(), key = itemgetter(0)))
@@ -182,6 +188,10 @@ class PyGengo(object):
 					query_hmac = hmac.new(self.private_key, query_string, sha1)
 					query_params['api_sig'] = query_hmac.hexdigest()
 					query_string = urlencode(query_params)
+				
+				if self.debug is True:
+					print query_string
+				
 				resp, content = self.client.request(base + '?%s' % query_string, fn['method'], headers = self.headers)
 			results = json.loads(content)
 			
