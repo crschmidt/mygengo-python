@@ -134,7 +134,7 @@ class TestTranslationJobFlow(unittest.TestCase):
 		}
 		
 		# Now that we've got the job, let's go ahead and see how much it'll cost.
-		cost_assessment = self.myGengo.determineTranslationCost(jobs = multiple_jobs)
+		cost_assessment = self.myGengo.determineTranslationCost(jobs = {'jobs': multiple_jobs})
 		self.assertEqual(cost_assessment['opstat'], 'ok')
 		
 		# If that method worked, sweet. Move on and create three jobs, store their IDs. Make sure we got an ID
@@ -145,7 +145,7 @@ class TestTranslationJobFlow(unittest.TestCase):
 		self.assertIsNotNone(job['response']['job']['job_id'])
 		self.created_job_ids.append(job['response']['job']['job_id'])
 		
-		jobs = self.myGengo.postTranslationJobs(jobs = multiple_jobs)
+		jobs = self.myGengo.postTranslationJobs(jobs = {'jobs': multiple_jobs})
 		self.assertEqual(job['opstat'], 'ok')
 		
 		# This is a fairly ugly way to check for and retrieve job IDs; in an ideal system you know the keys, and... well,
