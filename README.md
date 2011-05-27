@@ -576,5 +576,5 @@ Convenience method for making sure that text is in an acceptable format for myGe
 from pygengo import PyGengo    
 
 # Send along an optional source language declaration.
-PyGengo.unicode2utf8('I'm gonna convert the hell out of this text')
+PyGengo.unicode2utf8("私は")
 ```
