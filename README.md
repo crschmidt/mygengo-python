@@ -47,7 +47,7 @@ Documentation
 **Full documentation of each function is below**, but anyone should be able to cobble together 
 a working script with the following:
 
-    ``` python
+``` python
     from pygengo import PyGengo
     
     mygengo = PyGengo(
@@ -57,7 +57,7 @@ a working script with the following:
     )
     
     print mygengo.getAccountBalance()
-    ```
+```
 
 All function definitions can be found inside pygengo/mockdb.py. They exist as an uber dictionary: the
 key of the dictionary entry is the function name, and the parameters are exactly the same as specified
