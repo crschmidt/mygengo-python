@@ -48,15 +48,15 @@ Documentation
 a working script with the following:
 
 ``` python
-    from pygengo import PyGengo
+from pygengo import PyGengo
+
+mygengo = PyGengo(
+    public_key = 'your_public_key',
+    private_key = 'your_private_key',
+    sandbox = True, # possibly false, depending on your dev needs
+)
     
-    mygengo = PyGengo(
-        public_key = 'your_public_key',
-        private_key = 'your_private_key',
-        sandbox = True, # possibly false, depending on your dev needs
-    )
-    
-    print mygengo.getAccountBalance()
+print mygengo.getAccountBalance()
 ```
 
 All function definitions can be found inside pygengo/mockdb.py. They exist as an uber dictionary: the
@@ -76,14 +76,15 @@ before any of the methods below are available.
 - _headers_: Optional. Additional HTTP headers to send along, passed as a dictionary object.  
 
 #### Example:   
-    from pygengo import PyGengo
-    
-    myGengo = PyGengo(
-        public_key = 'your_public_key',
-        private_key = 'your_private_key',
-        sandbox = True, # possibly False, depending on your dev needs
-    )
+``` python
+from pygengo import PyGengo
 
+myGengo = PyGengo(
+    public_key = 'your_public_key',
+    private_key = 'your_private_key',
+    sandbox = True, # possibly False, depending on your dev needs
+)
+```
 
 PyGengo.getAccountStats()
 ---------------------------------------------------------------------------------------------------
@@ -93,16 +94,17 @@ Retrieves your account stats, like orders made, etc.
 None  
 
 ### Example:  
-    from pygengo import PyGengo
-    
-    myGengo = PyGengo(
-        public_key = 'your_public_key',
-        private_key = 'your_private_key',
-        sandbox = True, # possibly False, depending on your dev needs
-    )
-    
-    print myGengo.getAccountStats()
+``` python
+from pygengo import PyGengo
 
+myGengo = PyGengo(
+    public_key = 'your_public_key',
+    private_key = 'your_private_key',
+    sandbox = True, # possibly False, depending on your dev needs
+)
+
+print myGengo.getAccountStats()
+```
 
 PyGengo.getAccountBalance()
 --------------------------------------------------------------------------------------------------
@@ -112,16 +114,17 @@ Retrieves your account balance in myGengo credits.
 None
 
 ### Example:
-    from pygengo import PyGengo
-    
-    myGengo = PyGengo(
-        public_key = 'your_public_key',
-        private_key = 'your_private_key',
-        sandbox = True, # possibly False, depending on your dev needs
-    )
-    
-    print myGengo.getAccountBalance()
+``` python
+from pygengo import PyGengo
 
+myGengo = PyGengo(
+    public_key = 'your_public_key',
+    private_key = 'your_private_key',
+    sandbox = True, # possibly False, depending on your dev needs
+)
+
+print myGengo.getAccountBalance()
+```
 
 PyGengo.postTranslationJob()
 ---------------------------------------------------------------------------------------------------
@@ -132,30 +135,31 @@ below.
 - _job_: Required. A dictionary containing a full job description for myGengo (**see below**).
 
 ### Example:
-    from pygengo import PyGengo
-    
-    myGengo = PyGengo(
-        public_key = 'your_public_key',
-        private_key = 'your_private_key',
-        sandbox = True, # possibly False, depending on your dev needs
-    )
-    
-	job = {
-        'type': 'text', # REQUIRED. Type to translate, you'll probably always put 'text' here. ;P
-        'slug': 'Single :: English to Japanese', # REQUIRED. Slug for internally storing, can be generic.
-        'body_src': 'Testing pyGengo API library calls.', # REQUIRED. The text you're translating. ;P
-        'lc_src': 'en', # REQUIRED. source_language_code (see getServiceLanguages() for a list of codes)  
-        'lc_tgt': 'ja', # REQUIRED. target_language_code (see getServiceLanguages() for a list of codes)
-        'tier': 'standard', # REQUIRED. tier type ("machine", "standard", "pro", or "ultra")
-        
-        'auto_approve': 0, # OPTIONAL. Hopefully self explanatory (1 = yes, 0 = no),
-        'comment': 'HEY THERE TRANSLATOR', # OPTIONAL. Comment to leave for translator.
-        'callback_url': 'http://...', # OPTIONAL. Callback URL that updates are sent to.
-		'custom_data': 'your optional custom data, limited to 1kb.' # OPTIONAL
-	}
-    
-	myGengo.postTranslationJob(job = job)
+``` python    
+from pygengo import PyGengo
 
+myGengo = PyGengo(
+    public_key = 'your_public_key',
+    private_key = 'your_private_key',
+    sandbox = True, # possibly False, depending on your dev needs
+)
+
+job = {
+    'type': 'text', # REQUIRED. Type to translate, you'll probably always put 'text' here. ;P
+    'slug': 'Single :: English to Japanese', # REQUIRED. Slug for internally storing, can be generic.
+    'body_src': 'Testing pyGengo API library calls.', # REQUIRED. The text you're translating. ;P
+    'lc_src': 'en', # REQUIRED. source_language_code (see getServiceLanguages() for a list of codes)  
+    'lc_tgt': 'ja', # REQUIRED. target_language_code (see getServiceLanguages() for a list of codes)
+    'tier': 'standard', # REQUIRED. tier type ("machine", "standard", "pro", or "ultra")
+    
+    'auto_approve': 0, # OPTIONAL. Hopefully self explanatory (1 = yes, 0 = no),
+    'comment': 'HEY THERE TRANSLATOR', # OPTIONAL. Comment to leave for translator.
+    'callback_url': 'http://...', # OPTIONAL. Callback URL that updates are sent to.
+	'custom_data': 'your optional custom data, limited to 1kb.' # OPTIONAL
+}
+
+myGengo.postTranslationJob(job = job)
+```
 
 PyGengo.postTranslationJobs()
 ----------------------------------------------------------------------------------------------------------
@@ -165,50 +169,51 @@ Submits a job or group of jobs to translate.
 - _jobs_: Required. A Dictionary of jobs and associated properties to run up to myGengo.
 
 ### Example:
-    from pygengo import PyGengo
-    
-    myGengo = PyGengo(
-        public_key = 'your_public_key',
-        private_key = 'your_private_key',
-        sandbox = True, # possibly False, depending on your dev needs
-    )
-    
-    data = {
-		'jobs': {
-			'job_1': {
-				'type': 'text', # REQUIRED. Type to translate, you'll probably always put 'text' here. ;P
-				'slug': 'Single :: English to Japanese', # REQUIRED. Slug for internally storing, can be generic.
-				'body_src': 'Testing pyGengo API library calls.', # REQUIRED. The text you're translating. ;P
-				'lc_src': 'en', # REQUIRED. source_language_code (see getServiceLanguages() for a list of codes)  
-				'lc_tgt': 'ja', # REQUIRED. target_language_code (see getServiceLanguages() for a list of codes)
-				'tier': 'standard', # REQUIRED. tier type ("machine", "standard", "pro", or "ultra")
-				
-				'auto_approve': 0, # OPTIONAL. Hopefully self explanatory (1 = yes, 0 = no),
-				'comment': 'HEY THERE TRANSLATOR', # OPTIONAL. Comment to leave for translator.
-				'callback_url': 'http://...', # OPTIONAL. Callback URL that updates are sent to.
-				'custom_data': 'your optional custom data, limited to 1kb.' # OPTIONAL
-			},
-			'job_2': {
-				'type': 'text', # REQUIRED. Type to translate, you'll probably always put 'text' here. ;P
-				'slug': 'Single :: English to Japanese', # REQUIRED. Slug for internally storing, can be generic.
-				'body_src': 'Testing pyGengo API library calls.', # REQUIRED. The text you're translating. ;P
-				'lc_src': 'en', # REQUIRED. source_language_code (see getServiceLanguages() for a list of codes)  
-				'lc_tgt': 'ja', # REQUIRED. target_language_code (see getServiceLanguages() for a list of codes)
-				'tier': 'standard', # REQUIRED. tier type ("machine", "standard", "pro", or "ultra")
-			
-				'auto_approve': 0, # OPTIONAL. Hopefully self explanatory (1 = yes, 0 = no),
-				'comment': 'HEY THERE TRANSLATOR', # OPTIONAL. Comment to leave for translator.
-				'callback_url': 'http://...', # OPTIONAL. Callback URL that updates are sent to.
-				'custom_data': 'your optional custom data, limited to 1kb.' # OPTIONAL
-			},
-        },
-		'process': 1, # OPTIONAL. 1 (true, default) / 0 (false). Whether to pay for the job(s) and make them available for translation.
-        'as_group': 1, # OPTIONAL. 1 (true) / 0 (false, default). Whether all jobs in this group should be done by one translator.
-    }
-    
-	# Post over our two jobs, use the same translator for both, don't pay for them
-	myGengo.postTranslationJobs(jobs = data)
+``` python
+from pygengo import PyGengo
 
+myGengo = PyGengo(
+    public_key = 'your_public_key',
+    private_key = 'your_private_key',
+    sandbox = True, # possibly False, depending on your dev needs
+)
+
+data = {
+	'jobs': {
+		'job_1': {
+			'type': 'text', # REQUIRED. Type to translate, you'll probably always put 'text' here. ;P
+			'slug': 'Single :: English to Japanese', # REQUIRED. Slug for internally storing, can be generic.
+			'body_src': 'Testing pyGengo API library calls.', # REQUIRED. The text you're translating. ;P
+			'lc_src': 'en', # REQUIRED. source_language_code (see getServiceLanguages() for a list of codes)  
+			'lc_tgt': 'ja', # REQUIRED. target_language_code (see getServiceLanguages() for a list of codes)
+			'tier': 'standard', # REQUIRED. tier type ("machine", "standard", "pro", or "ultra")
+			
+			'auto_approve': 0, # OPTIONAL. Hopefully self explanatory (1 = yes, 0 = no),
+			'comment': 'HEY THERE TRANSLATOR', # OPTIONAL. Comment to leave for translator.
+			'callback_url': 'http://...', # OPTIONAL. Callback URL that updates are sent to.
+			'custom_data': 'your optional custom data, limited to 1kb.' # OPTIONAL
+		},
+		'job_2': {
+			'type': 'text', # REQUIRED. Type to translate, you'll probably always put 'text' here. ;P
+			'slug': 'Single :: English to Japanese', # REQUIRED. Slug for internally storing, can be generic.
+			'body_src': 'Testing pyGengo API library calls.', # REQUIRED. The text you're translating. ;P
+			'lc_src': 'en', # REQUIRED. source_language_code (see getServiceLanguages() for a list of codes)  
+			'lc_tgt': 'ja', # REQUIRED. target_language_code (see getServiceLanguages() for a list of codes)
+			'tier': 'standard', # REQUIRED. tier type ("machine", "standard", "pro", or "ultra")
+
+			'auto_approve': 0, # OPTIONAL. Hopefully self explanatory (1 = yes, 0 = no),
+			'comment': 'HEY THERE TRANSLATOR', # OPTIONAL. Comment to leave for translator.
+			'callback_url': 'http://...', # OPTIONAL. Callback URL that updates are sent to.
+			'custom_data': 'your optional custom data, limited to 1kb.' # OPTIONAL
+		},
+    },
+	'process': 1, # OPTIONAL. 1 (true, default) / 0 (false). Whether to pay for the job(s) and make them available for translation.
+    'as_group': 1, # OPTIONAL. 1 (true) / 0 (false, default). Whether all jobs in this group should be done by one translator.
+}
+
+# Post over our two jobs, use the same translator for both, don't pay for them
+myGengo.postTranslationJobs(jobs = data)
+```
 **Note:** 'as_group' has a catch: some restrictions apply to what jobs can be grouped, including the requirement that language pairs and tiers must be the same across all jobs.
 
 
@@ -221,46 +226,47 @@ it very much seems like a GET. Bears a striking similarity to PyGengo.postTransl
 - _jobs_: Required. An Dictionary of Jobs to run up to myGengo.
 
 ### Example:	
-    from pygengo import PyGengo
-    
-    myGengo = PyGengo(
-        public_key = 'your_public_key',
-        private_key = 'your_private_key',
-        sandbox = True, # possibly False, depending on your dev needs
-    )
-    
-    jobs_data = {
-	    'job_1': {
-	        'type': 'text', # REQUIRED. Type to translate, you'll probably always put 'text' here. ;P
-	        'slug': 'Single :: English to Japanese', # REQUIRED. Slug for internally storing, can be generic.
-	        'body_src': 'Testing pyGengo API library calls.', # REQUIRED. The text you're translating. ;P
-	        'lc_src': 'en', # REQUIRED. source_language_code (see getServiceLanguages() for a list of codes)  
-	        'lc_tgt': 'ja', # REQUIRED. target_language_code (see getServiceLanguages() for a list of codes)
-	        'tier': 'standard', # REQUIRED. tier type ("machine", "standard", "pro", or "ultra")
-        
-	        'auto_approve': 0, # OPTIONAL. Hopefully self explanatory (1 = yes, 0 = no),
-	        'comment': 'HEY THERE TRANSLATOR', # OPTIONAL. Comment to leave for translator.
-	        'callback_url': 'http://...', # OPTIONAL. Callback URL that updates are sent to.
-			'custom_data': 'your optional custom data, limited to 1kb.' # OPTIONAL
-        },
-	    'job_2': {
-	        'type': 'text', # REQUIRED. Type to translate, you'll probably always put 'text' here. ;P
-	        'slug': 'Single :: English to Japanese', # REQUIRED. Slug for internally storing, can be generic.
-	        'body_src': 'Testing pyGengo API library calls.', # REQUIRED. The text you're translating. ;P
-	        'lc_src': 'en', # REQUIRED. source_language_code (see getServiceLanguages() for a list of codes)  
-	        'lc_tgt': 'ja', # REQUIRED. target_language_code (see getServiceLanguages() for a list of codes)
-	        'tier': 'standard', # REQUIRED. tier type ("machine", "standard", "pro", or "ultra")
-        
-	        'auto_approve': 0, # OPTIONAL. Hopefully self explanatory (1 = yes, 0 = no),
-	        'comment': 'HEY THERE TRANSLATOR', # OPTIONAL. Comment to leave for translator.
-	        'callback_url': 'http://...', # OPTIONAL. Callback URL that updates are sent to.
-			'custom_data': 'your optional custom data, limited to 1kb.' # OPTIONAL
-        },
-    }
-    
-	# Post over our two jobs, use the same translator for both, don't pay for them
-	myGengo.determineTranslationCost(jobs = jobs_data)
-
+``` python
+from pygengo import PyGengo
+   
+myGengo = PyGengo(
+    public_key = 'your_public_key',
+    private_key = 'your_private_key',
+    sandbox = True, # possibly False, depending on your dev needs
+)
+   
+jobs_data = {
+	'job_1': {
+       	'type': 'text', # REQUIRED. Type to translate, you'll probably always put 'text' here. ;P
+        'slug': 'Single :: English to Japanese', # REQUIRED. Slug for internally storing, can be generic.
+        'body_src': 'Testing pyGengo API library calls.', # REQUIRED. The text you're translating. ;P
+        'lc_src': 'en', # REQUIRED. source_language_code (see getServiceLanguages() for a list of codes)  
+        'lc_tgt': 'ja', # REQUIRED. target_language_code (see getServiceLanguages() for a list of codes)
+        'tier': 'standard', # REQUIRED. tier type ("machine", "standard", "pro", or "ultra")
+      
+       	'auto_approve': 0, # OPTIONAL. Hopefully self explanatory (1 = yes, 0 = no),
+        'comment': 'HEY THERE TRANSLATOR', # OPTIONAL. Comment to leave for translator.
+        'callback_url': 'http://...', # OPTIONAL. Callback URL that updates are sent to.
+		'custom_data': 'your optional custom data, limited to 1kb.' # OPTIONAL
+	},
+    'job_2': {
+      	'type': 'text', # REQUIRED. Type to translate, you'll probably always put 'text' here. ;P
+        'slug': 'Single :: English to Japanese', # REQUIRED. Slug for internally storing, can be generic.
+        'body_src': 'Testing pyGengo API library calls.', # REQUIRED. The text you're translating. ;P
+        'lc_src': 'en', # REQUIRED. source_language_code (see getServiceLanguages() for a list of codes)  
+        'lc_tgt': 'ja', # REQUIRED. target_language_code (see getServiceLanguages() for a list of codes)
+        'tier': 'standard', # REQUIRED. tier type ("machine", "standard", "pro", or "ultra")
+      
+        'auto_approve': 0, # OPTIONAL. Hopefully self explanatory (1 = yes, 0 = no),
+        'comment': 'HEY THERE TRANSLATOR', # OPTIONAL. Comment to leave for translator.
+        'callback_url': 'http://...', # OPTIONAL. Callback URL that updates are sent to.
+		'custom_data': 'your optional custom data, limited to 1kb.' # OPTIONAL
+     },
+}
+   
+# Post over our two jobs, use the same translator for both, don't pay for them
+myGengo.determineTranslationCost(jobs = jobs_data)
+```
 
 PyGengo.updateTranslationJob()
 ----------------------------------------------------------------------------------------------------------
@@ -291,22 +297,23 @@ None
 - _follow_up_: Optional. "requeue" (default) or "cancel". If you choose "requeue" the job will be rejected and then passed onto another translator. If you choose "cancel" the job will be completely cancelled upon rejection.
 
 ### Example:
-    from pygengo import PyGengo
-    
-    myGengo = PyGengo(
-        public_key = 'your_public_key',
-        private_key = 'your_private_key',
-        sandbox = True, # possibly False, depending on your dev needs
-    )
-    
-    # Some example action objects, choose one to test by uncommenting
-    updateObj = {'action': 'purchase'}
-    # updateObj = {'action': 'revise', 'comment': 'Thanks but no thanks'}
-    # updateObj = {'action': 'approve', 'rating': 1, 'for_translator': 'Thanks!'}
-    # updateObj = {'action': 'reject', 'reason': 'quality', 'comment': 'My grandmother does better.', 'captcha': 'bert'}
-    
-	myGengo.updateTranslationJob(id = 42, action = updateObj)
+``` python
+from pygengo import PyGengo
 
+myGengo = PyGengo(
+    public_key = 'your_public_key',
+    private_key = 'your_private_key',
+    sandbox = True, # possibly False, depending on your dev needs
+)
+
+# Some example action objects, choose one to test by uncommenting
+updateObj = {'action': 'purchase'}
+# updateObj = {'action': 'revise', 'comment': 'Thanks but no thanks'}
+# updateObj = {'action': 'approve', 'rating': 1, 'for_translator': 'Thanks!'}
+# updateObj = {'action': 'reject', 'reason': 'quality', 'comment': 'My grandmother does better.', 'captcha': 'bert'}
+
+myGengo.updateTranslationJob(id = 42, action = updateObj)
+```
 
 PyGengo.getTranslationJob()
 ----------------------------------------------------------------------------------------------------------
@@ -317,16 +324,17 @@ Retrieves a specific job from myGengo.
 - _pre_mt_: Optional. 1 (true) / 0 (false, default). Whether to return a machine translation if the human translation is not complete yet.
 
 ### Example:
-    from pygengo import PyGengo
-    
-    myGengo = PyGengo(
-        public_key = 'your_public_key',
-        private_key = 'your_private_key',
-        sandbox = True, # possibly False, depending on your dev needs
-    )
-    
-	myGengo.getTranslationJob(id = 42, pre_mt = 1)
+``` python
+from pygengo import PyGengo
 
+myGengo = PyGengo(
+    public_key = 'your_public_key',
+    private_key = 'your_private_key',
+    sandbox = True, # possibly False, depending on your dev needs
+)
+
+myGengo.getTranslationJob(id = 42, pre_mt = 1)
+```
 
 PyGengo.getTranslationJobs()
 ----------------------------------------------------------------------------------------------------------
@@ -338,16 +346,17 @@ Retrieves a list of resources for the most recent jobs filtered by the given par
 - _count_: Optional. Defaults to 10.
 
 ### Example:
-    from pygengo import PyGengo
-    
-    myGengo = PyGengo(
-        public_key = 'your_public_key',
-        private_key = 'your_private_key',
-        sandbox = True, # possibly False, depending on your dev needs
-    )
-    
-	myGengo.getTranslationJobs(status = "unpaid", count = 15)
+``` python
+from pygengo import PyGengo
 
+myGengo = PyGengo(
+    public_key = 'your_public_key',
+    private_key = 'your_private_key',
+    sandbox = True, # possibly False, depending on your dev needs
+)
+
+myGengo.getTranslationJobs(status = "unpaid", count = 15)
+```
 
 PyGengo.getTranslationJobBatch()
 ----------------------------------------------------------------------------------------------------------
@@ -357,15 +366,17 @@ Retrieves the group of jobs that were previously submitted together.
 - _id_: Required. The ID of a job that you're looking for the entire batch of.
 
 ### Example:
-    from pygengo import PyGengo
-    
-    myGengo = PyGengo(
-        public_key = 'your_public_key',
-        private_key = 'your_private_key',
-        sandbox = True, # possibly False, depending on your dev needs
-    )
-    
-	myGengo.getTranslationJobBatch(id = 42)
+``` python
+from pygengo import PyGengo
+
+myGengo = PyGengo(
+    public_key = 'your_public_key',
+    private_key = 'your_private_key',
+    sandbox = True, # possibly False, depending on your dev needs
+)
+
+myGengo.getTranslationJobBatch(id = 42)
+```
 
 
 PyGengo.postTranslationJobComment()
@@ -377,18 +388,19 @@ Submits a new comment to the job's comment thread.
 - _comment_: Required. A dictionary with the body/text of your comment.
 
 ### Example:
-    from pygengo import PyGengo
-    
-    myGengo = PyGengo(
-        public_key = 'your_public_key',
-        private_key = 'your_private_key',
-        sandbox = True, # possibly False, depending on your dev needs
-    )
-    
-	myGengo.postTranslationJobComment(id = 42, comment = {
-        'body': 'I love lamp!',
-    })
+``` python
+from pygengo import PyGengo
 
+myGengo = PyGengo(
+    public_key = 'your_public_key',
+    private_key = 'your_private_key',
+    sandbox = True, # possibly False, depending on your dev needs
+)
+
+myGengo.postTranslationJobComment(id = 42, comment = {
+	'body': 'I love lamp!',
+})
+```
 
 PyGengo.getTranslationJobComments()
 ----------------------------------------------------------------------------------------------------------
@@ -398,16 +410,17 @@ Retrieves the comment thread for a job.
 - _id_: Required. The ID of the translation job you're retrieving comments from.
 
 ### Example:
-    from pygengo import PyGengo
-    
-    myGengo = PyGengo(
-        public_key = 'your_public_key',
-        private_key = 'your_private_key',
-        sandbox = True, # possibly False, depending on your dev needs
-    )
-    
-	myGengo.getTranslationJobComments(id = 42)
+``` python
+from pygengo import PyGengo
 
+myGengo = PyGengo(
+    public_key = 'your_public_key',
+    private_key = 'your_private_key',
+    sandbox = True, # possibly False, depending on your dev needs
+)
+
+myGengo.getTranslationJobComments(id = 42)
+```
 
 PyGengo.getTranslationJobFeedback()
 -----------------------------------------------------------------------------------------------------------
@@ -417,16 +430,17 @@ Retrieves the feedback you have submitted for a particular job.
 - _id_: Required. The ID of the translation job you're retrieving comments from.
 
 ### Example:
-    from pygengo import PyGengo
-    
-    myGengo = PyGengo(
-        public_key = 'your_public_key',
-        private_key = 'your_private_key',
-        sandbox = True, # possibly False, depending on your dev needs
-    )
-    
-	myGengo.getTranslationJobFeedback(id = 42)
+``` python
+from pygengo import PyGengo
 
+myGengo = PyGengo(
+    public_key = 'your_public_key',
+    private_key = 'your_private_key',
+    sandbox = True, # possibly False, depending on your dev needs
+)
+
+myGengo.getTranslationJobFeedback(id = 42)
+```
 
 PyGengo.getTranslationJobRevisions()
 -------------------------------------------------------------------------------------------------------------
@@ -436,16 +450,17 @@ Gets list of revision resources for a job. Revisions are created each time a tra
 - _id_: Required. The ID of the translation job you're getting revisions from.
 
 ### Example:
-    from pygengo import PyGengo
-    
-    myGengo = PyGengo(
-        public_key = 'your_public_key',
-        private_key = 'your_private_key',
-        sandbox = True, # possibly False, depending on your dev needs
-    )
-    
-	myGengo.getTranslationJobRevisions(id = 42)
+``` python
+from pygengo import PyGengo
 
+myGengo = PyGengo(
+    public_key = 'your_public_key',
+    private_key = 'your_private_key',
+    sandbox = True, # possibly False, depending on your dev needs
+)
+
+myGengo.getTranslationJobRevisions(id = 42)
+```
 
 PyGengo.getTranslationJobRevision()
 ----------------------------------------------------------------------------------------------------------
@@ -456,16 +471,17 @@ Gets a specific revision for a job.
 - _rev_id_: Required. The ID of the revision you're looking up.
 
 ### Example:
-    from pygengo import PyGengo
-    
-    myGengo = PyGengo(
-        public_key = 'your_public_key',
-        private_key = 'your_private_key',
-        sandbox = True, # possibly False, depending on your dev needs
-    )
-    
-	myGengo.getTranslationJobRevision(id = 42, rev_id = 1)
+``` python
+from pygengo import PyGengo
 
+myGengo = PyGengo(
+    public_key = 'your_public_key',
+    private_key = 'your_private_key',
+    sandbox = True, # possibly False, depending on your dev needs
+)
+
+myGengo.getTranslationJobRevision(id = 42, rev_id = 1)
+```
 
 PyGengo.getTranslationJobPreviewImage()
 ----------------------------------------------------------------------------------------------------------
@@ -475,16 +491,17 @@ Renders a GIF preview image of the translated text.
 - _id_: Required. The ID of the translation job you want a preview image for.
 
 ### Example:
-    from pygengo import PyGengo
-    
-    myGengo = PyGengo(
-        public_key = 'your_public_key',
-        private_key = 'your_private_key',
-        sandbox = True, # possibly False, depending on your dev needs
-    )
-    
-	myGengo.getTranslationJobPreview(id = 42)
+``` python
+from pygengo import PyGengo
 
+myGengo = PyGengo(
+    public_key = 'your_public_key',
+    private_key = 'your_private_key',
+    sandbox = True, # possibly False, depending on your dev needs
+)
+
+myGengo.getTranslationJobPreview(id = 42)
+```
 
 PyGengo.deleteTranslationJob()
 ----------------------------------------------------------------------------------------------------------
@@ -494,16 +511,17 @@ Cancels the job. You can only cancel a job if it has not been started already by
 - _id_: Required. The ID of the job you want to delete.
 
 ### Example:
-    from pygengo import PyGengo
-    
-    myGengo = PyGengo(
-        public_key = 'your_public_key',
-        private_key = 'your_private_key',
-        sandbox = True, # possibly False, depending on your dev needs
-    )
-    
-	myGengo.deleteTranslationJob(id = 42)
+``` python
+from pygengo import PyGengo
 
+myGengo = PyGengo(
+    public_key = 'your_public_key',
+    private_key = 'your_private_key',
+    sandbox = True, # possibly False, depending on your dev needs
+)
+
+myGengo.deleteTranslationJob(id = 42)
+```
 
 PyGengo.getServiceLanguages()
 ----------------------------------------------------------------------------------------------------------
@@ -513,16 +531,17 @@ Returns a list of supported languages and their language codes.
 None
 
 ### Example:
-    from pygengo import PyGengo
-    
-    myGengo = PyGengo(
-        public_key = 'your_public_key',
-        private_key = 'your_private_key',
-        sandbox = True, # possibly False, depending on your dev needs
-    )
-    
-	myGengo.getServiceLanguages()
+``` python
+from pygengo import PyGengo
 
+myGengo = PyGengo(
+    public_key = 'your_public_key',
+    private_key = 'your_private_key',
+    sandbox = True, # possibly False, depending on your dev needs
+)
+
+myGengo.getServiceLanguages()
+```
 
 PyGengo.getServiceLanguagePairs()
 --------------------------------------------------------------------------------------------------------
@@ -532,17 +551,18 @@ Returns supported translation language pairs, tiers, and credit prices.
 - _lc_src_: Optional. A source language code to filter the results to relevant pairs.
 
 ### Example:
-    from pygengo import PyGengo
-    
-    myGengo = PyGengo(
-        public_key = 'your_public_key',
-        private_key = 'your_private_key',
-        sandbox = True, # possibly False, depending on your dev needs
-    )
-    
-    # Send along an optional source language declaration.
-	myGengo.getServiceLanguagePairs(lc_src = 'en')
+``` python
+from pygengo import PyGengo
 
+myGengo = PyGengo(
+    public_key = 'your_public_key',
+    private_key = 'your_private_key',
+    sandbox = True, # possibly False, depending on your dev needs
+)
+
+# Send along an optional source language declaration.
+myGengo.getServiceLanguagePairs(lc_src = 'en')
+```
 
 PyGengo.unicode2utf8()
 --------------------------------------------------------------------------------------------------------
@@ -552,7 +572,9 @@ Convenience method for making sure that text is in an acceptable format for myGe
 - _text_: Required. Text to convert.
 
 ### Example:
-    from pygengo import PyGengo    
-   
-    # Send along an optional source language declaration.
-	PyGengo.unicode2utf8('I'm gonna convert the hell out of this text')
+``` python
+from pygengo import PyGengo    
+
+# Send along an optional source language declaration.
+PyGengo.unicode2utf8('I'm gonna convert the hell out of this text')
+```
