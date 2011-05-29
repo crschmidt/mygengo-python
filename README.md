@@ -1,4 +1,4 @@
-myGengo Python Library (for the [myGengo API](http://gengo.com/))
+myGengo Python Library (for the [myGengo API](http://mygengo.com/))
 ========================================================================================================
 Translating your tools and products helps people all over the world access them; this is, of course, a
 somewhat tricky problem to solve. **[myGengo](http://mygengo.com/)** is a service that offers human-translation
