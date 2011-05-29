@@ -2,7 +2,7 @@
 
 """
 	Official Python library for interfacing with the myGengo API.
-	It's released under the LGPL and totally, freely available. Check it out on Github
+	It's released under a BSD-style license and totally, freely available. Check it out on Github
 	if you find any issues!
 
 	Questions, comments? ryan@mygengo.com

@@ -1,5 +1,5 @@
 """
-	A huge map of every myGengo API endpoint to a function definition in PyGengo.
+	A huge map of every myGengo API endpoint to a function definition in mygengo-python.
 
 	Parameters that need to be embedded in the URL are treated with mustaches, e.g:
 
