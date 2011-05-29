@@ -1,30 +1,25 @@
 #!/usr/bin/python
 
 """
-	PyGengo is an unofficial Python library for interfacing with the myGengo API.
+	Official Python library for interfacing with the myGengo API.
 	It's released under the LGPL and totally, freely available. Check it out on Github
 	if you find any issues!
 
-	Questions, comments? ryan@venodesigns.net
+	Questions, comments? ryan@mygengo.com
 """
 
-__author__ = 'Ryan McGrath <ryan@venodesigns.net>'
-__version__ = '1.3.3'
+__author__ = 'Ryan McGrath <ryan@mygengo.com>'
+__version__ = '1.0.0'
 
-import httplib2
-import mimetypes
-import mimetools
-import re
-import hmac
+import httplib2, mimetypes, mimetools, re, hmac
 
 from pprint import pprint
-
 from hashlib import sha1
 from urllib import urlencode
 from time import time
 from operator import itemgetter
 
-# pygengo_mockdb is a file with a dictionary of every API endpoint for myGengo.
+# mockdb is a file with a dictionary of every API endpoint for myGengo.
 from mockdb import api_urls, apihash
 
 # There are some special setups (like, oh, a Django application) where
@@ -43,16 +38,16 @@ except ImportError:
 			from django.utils import simplejson as json
 		except:
 			# Seriously wtf is wrong with you if you get this Exception.
-			raise Exception("PyGengo requires the simplejson library (or Python 2.6+) to work. http://www.undefined.org/python/")
+			raise Exception("mygengo requires the simplejson library (or Python 2.6+) to work. http://www.undefined.org/python/")
 
-class PyGengoError(Exception):
+class MyGengoError(Exception):
 	"""
 		Generic error class, catch-all for most PyGengo issues.
 		Special cases are handled by APILimit and AuthError.
 
 		Note: You need to explicitly import them into your code, e.g:
 
-		from pygengo import PyGengoError, AuthError
+		from mygengo import MyGengoError, MyGengoAuthError
 	"""
 	def __init__(self, msg, error_code=None):
 		self.msg = msg
@@ -64,8 +59,7 @@ class PyGengoError(Exception):
 	def __str__(self):
 		return repr(self.msg)
 
-
-class PyGengoAuthError(PyGengoError):
+class MyGengoAuthError(MyGengoError):
 	"""
 		Raised when you try to access a protected resource and it fails due to some issue with
 		your authentication.
@@ -76,13 +70,11 @@ class PyGengoAuthError(PyGengoError):
 	def __str__(self):
 		return repr(self.msg)
 
-
-class PyGengo(object):
+class MyGengo(object):
 	def __init__(self, public_key = None, private_key = None, sandbox = False, api_version = 1, headers = None, debug = False):
-		"""PyGengo(public_key = None, private_key = None, sandbox = False, headers = None)
+		"""MyGengo(public_key = None, private_key = None, sandbox = False, headers = None)
 
-			Instantiates an instance of PyGengo. While you can have multiple instances of PyGengo going at once, this is not recommended
-			practice, and this library will never be held responsible for anything myGengo may do to you if you decide to go down this route.
+			Instantiates an instance of MyGengo.
 			
 			Parameters:
 				public_key - Your 'public' key for myGengo. Retrieve this from your account information if you want to do authenticated calls.
@@ -98,7 +90,7 @@ class PyGengo(object):
 		# If there's headers, set them, otherwise be an embarassing parent for their own good.
 		self.headers = headers
 		if self.headers is None:
-			self.headers = {'User-agent': 'PyGengo Python myGengo Library v%s' % __version__}
+			self.headers = {'User-agent': 'myGengo Python Library v%s' % __version__}
 		# No matter whether we get some supplied or use the generic, tell it we want JSON. ;P
 		self.headers['Accept'] = 'application/json'
 		self.debug = debug
@@ -108,7 +100,7 @@ class PyGengo(object):
 		"""
 			The most magically awesome block of code you'll ever see.
 
-			Rather than list out 9 million damn methods for this API, we just keep a table (see above) of
+			Rather than list out 9 million methods for this API, we just keep a table (see above) of
 			every API endpoint and their corresponding function id for this library. This pretty much gives
 			unlimited flexibility in API support - there's a slight chance of a performance hit here, but if this is
 			going to be your bottleneck... well, don't use Python. ;P

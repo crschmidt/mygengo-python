@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 
 """
-	A set of tests for pyGengo. They all require internet connections.
+	A set of tests for myGengo. They all require internet connections.
 	In fact, this entire library and API requires an internet connection.
 	Don't complain.
 
@@ -16,7 +16,7 @@
 
 import unittest
 from pprint import pprint
-from pygengo import PyGengo, PyGengoError, PyGengoAuthError
+from mygengo import MyGengo, MyGengoError, MyGengoAuthError
 
 # test_keys is a file I use to store my keys separately. It's stuck in the
 # .gitignore as well, so feel free to use it for your own purposes, but there's
@@ -31,7 +31,7 @@ SANDBOX = True
 
 class TestPyGengoCore(unittest.TestCase):
 	"""
-		Handles testing the core parts of pyGengo (i.e, authentication signing, etc).
+		Handles testing the core parts of myGengo (i.e, authentication signing, etc).
 	"""
 	def test_MethodDoesNotExist(self):
 		myGengo = PyGengo(public_key = public_key, private_key = private_key, sandbox = SANDBOX)
@@ -107,7 +107,7 @@ class TestTranslationJobFlow(unittest.TestCase):
 		single_job = {
 			'type': 'text',
 			'slug': 'Single :: English to Japanese',
-			'body_src': 'Testing pyGengo API library calls.',
+			'body_src': 'Testing myGengo API library calls.',
 			'lc_src': 'en',
 			'lc_tgt': 'ja',
 			'tier': 'standard',
@@ -139,7 +139,7 @@ class TestTranslationJobFlow(unittest.TestCase):
 		
 		# If that method worked, sweet. Move on and create three jobs, store their IDs. Make sure we got an ID
 		# back, since these methods are otherwise largely useless without that returned data. These tests walk a fine
-		# line between testing pyGengo and the myGengo API functionality as a whole - watch yourself if you add to this. :)
+		# line between testing myGengo and the myGengo API functionality as a whole - watch yourself if you add to this. :)
 		job = self.myGengo.postTranslationJob(job = single_job)
 		self.assertEqual(job['opstat'], 'ok')
 		self.assertIsNotNone(job['response']['job']['job_id'])
@@ -156,11 +156,11 @@ class TestTranslationJobFlow(unittest.TestCase):
 				self.assertIsNotNone(job_obj[job]['job_id'])
 				self.created_job_ids.append(job_obj[job]['job_id'])
 	
-	@unittest.skip("We don't test pyGengo.getTranslationJobPreviewImage() because it's potentially resource heavy on the myGengo API.")
+	@unittest.skip("We don't test myGengo.getTranslationJobPreviewImage() because it's potentially resource heavy on the myGengo API.")
 	def test_getTranslationJobPreviewImage(self):
 		"""
 			This test could be a bit more granular, but I'm undecided at the moment - testing the response stream
-			of this method is more of a Unit Test for myGengo than pyGengo. Someone can extend if they see fit, but I 
+			of this method is more of a Unit Test for myGengo than myGengo. Someone can extend if they see fit, but I 
 			currently see no reason to mess with this further.
 		"""
 		img = self.myGengo.getTranslationJobPreviewImage(id = self.created_job_ids[0])
@@ -168,7 +168,7 @@ class TestTranslationJobFlow(unittest.TestCase):
 	
 	def test_postJobDataMethods(self):
 		"""
-			Tests all the pyGengo methods that deal with updating jobs, posting comments, etc. test_getJobDataMethods() checks things,
+			Tests all the myGengo methods that deal with updating jobs, posting comments, etc. test_getJobDataMethods() checks things,
 			but they need to exist first - think of this as the alcoholic mother to _getJobDataMethods().
 		"""
 		# The 'update' method can't really be tested, as it requires the translator having actually done something before
