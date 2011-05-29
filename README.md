@@ -574,6 +574,6 @@ Convenience method for making sure that text is in an acceptable format for myGe
 ``` python
 from mygengo import MyGengo    
 
-# Send along an optional source language declaration.
+# Make this into a UTF-8 encoded string...
 MyGengo.unicode2utf8("私は")
 ```
