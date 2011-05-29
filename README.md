@@ -222,7 +222,7 @@ Determine how much it'll cost to translate a given piece of text/copy. A method 
 it very much seems like a GET. Bears a striking similarity to MyGengo.postTranslationJobs().
 
 ### Parameters:
-- _jobs_: Required. An Dictionary of Jobs to run up to gengo.
+- _jobs_: Required. An Dictionary of Jobs to run up to myGengo.
 
 ### Example:	
 ``` python
