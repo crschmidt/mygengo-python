@@ -9,7 +9,7 @@
 """
 
 __author__ = 'Ryan McGrath <ryan@mygengo.com>'
-__version__ = '1.0.0'
+__version__ = '1.2.0'
 
 import httplib2, mimetypes, mimetools, re, hmac
 
@@ -42,7 +42,7 @@ except ImportError:
 
 class MyGengoError(Exception):
 	"""
-		Generic error class, catch-all for most PyGengo issues.
+		Generic error class, catch-all for most MyGengo issues.
 		Special cases are handled by APILimit and AuthError.
 
 		Note: You need to explicitly import them into your code, e.g:
@@ -54,7 +54,7 @@ class MyGengoError(Exception):
 		if error_code == 1000:
 			# Auth errors tend to be the most requested for their own
 			# Exception instances, so give it to the masses, yo.
-			raise PyGengoAuthError(msg)
+			raise MyGengoAuthError(msg)
 	
 	def __str__(self):
 		return repr(self.msg)
@@ -189,7 +189,7 @@ class MyGengo(object):
 			
 			# See if we got any weird or odd errors back that we can cleanly raise on or something...
 			if 'opstat' in results and results['opstat'] != 'ok':
-				raise PyGengoError(results['err']['msg'], results['err']['code'])
+				raise MyGengoError(results['err']['msg'], results['err']['code'])
 			
 			# If not, screw it, return the junks!
 			return results
