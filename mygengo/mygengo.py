@@ -15,7 +15,7 @@ import httplib2, mimetypes, mimetools, re, hmac
 
 from pprint import pprint
 from hashlib import sha1
-from urllib import urlencode
+from urllib import urlencode, quote
 from time import time
 from operator import itemgetter
 
@@ -143,7 +143,7 @@ class MyGengo(object):
 			#
 			# Note: for further information on what's going on here, it's best to familiarize yourself
 			# with the myGengo authentication API. (http://mygengo.com/services/api/dev-docs/authentication)
-			query_params = dict([k, urlencode(v.encode('utf-8'))] for k, v in kwargs.items())
+			query_params = dict([k, quote(v.encode('utf-8'))] for k, v in kwargs.items())
 			if self.public_key is not None:
 				query_params['api_key'] = self.public_key
 			query_params['ts'] = str(int(time()))
